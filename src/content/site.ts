@@ -118,7 +118,7 @@ export const testes: Teste[] = [
     preco: "R$ 450",
     icon: "target",
     foto: "/media/inovacao-confirmacao.jpg",
-    cta: { label: "Saiba mais", href: "/testes#merle" },
+    cta: { label: "Saiba mais", href: "/testes/merle" },
   },
   {
     id: "avulsos",
@@ -128,7 +128,7 @@ export const testes: Teste[] = [
     preco: "R$ 450 por teste",
     icon: "searchCheck",
     foto: "/media/inovacao-individualizado.jpg",
-    cta: { label: "Saiba mais", href: "/testes#avulsos" },
+    cta: { label: "Saiba mais", href: "/testes/avulsos" },
   },
   {
     id: "perfil",
@@ -138,7 +138,7 @@ export const testes: Teste[] = [
     preco: "R$ 489",
     icon: "paw",
     foto: "/media/abordagem-preditiva.jpg",
-    cta: { label: "Saiba mais", href: "/testes#perfil" },
+    cta: { label: "Saiba mais", href: "/testes/perfil" },
   },
 ];
 
@@ -590,10 +590,10 @@ export const rodape = {
     {
       titulo: "Produto",
       links: [
-        { label: "Painel Saúde", href: "/testes#painel" },
-        { label: "Teste Merle", href: "/testes#merle" },
-        { label: "Testes avulsos", href: "/testes#avulsos" },
-        { label: "Perfil de DNA", href: "/testes#perfil" },
+        { label: "Painel Saúde", href: "/testes/painel" },
+        { label: "Teste Merle", href: "/testes/merle" },
+        { label: "Testes avulsos", href: "/testes/avulsos" },
+        { label: "Perfil de DNA", href: "/testes/perfil" },
         { label: "Preços", href: "/precos" },
         { label: "Lista de doenças", href: links.pendente },
       ],

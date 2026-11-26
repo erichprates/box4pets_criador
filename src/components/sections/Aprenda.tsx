@@ -398,7 +398,7 @@ export function Guia() {
                 oferecemos o Teste Merle detalhado em parceria com a Orivet.
               </p>
               <Link
-                href="/testes#merle"
+                href="/testes/merle"
                 className="mt-5 inline-flex min-h-11 items-center font-semibold text-ciano-200 underline decoration-ciano-200/40 underline-offset-4 hover:decoration-ciano-200"
               >
                 Conhecer o Teste Merle →

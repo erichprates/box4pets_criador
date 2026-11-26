@@ -3,7 +3,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { links, ninhadaHome, porque, selos, testes, type Teste } from "@/content/site";
+import { links, ninhadaHome, porque, selos, testes } from "@/content/site";
 import { asset } from "@/lib/base";
 import { ease, viewport } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -12,6 +12,7 @@ import { Words } from "../motion/Words";
 import { Lista, Titulo } from "../ui/Blocos";
 import { SplitButton, Tag } from "../ui/Button";
 import { Icon } from "../ui/icons";
+import { Vitrine } from "./Loja";
 
 /** Faixa de selos que corre sem parar, logo abaixo do hero. */
 export function Selos() {
@@ -90,149 +91,43 @@ export function PorQue() {
   );
 }
 
-function CardTeste({ item, n, pin }: { item: Teste; n: number; pin: boolean }) {
-  const dark = !!item.recomendado;
-  return (
-    <article
-      className={`group flex gap-2.5 rounded-card p-2.5 shadow-[0_24px_60px_rgb(27_18_61/0.28)] max-sm:flex-col ${
-        pin ? "w-[620px] shrink-0" : ""
-      } ${dark ? "bg-ink text-white ring-1 ring-ciano-200/40" : "bg-white text-ink"}`}
-    >
-      <div
-        className={`relative flex min-h-[270px] shrink-0 flex-col justify-between overflow-hidden rounded-[14px] p-4 max-sm:h-44 max-sm:min-h-0 sm:w-[190px] ${
-          dark ? "bg-gradient-to-b from-ciano to-roxo" : "grad-card"
-        }`}
-      >
-        {item.foto && (
-          <>
-            <Image
-              src={item.foto}
-              alt=""
-              fill
-              sizes="(min-width: 640px) 240px, 92vw"
-              className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-110"
-            />
-            <span className="absolute inset-0 bg-gradient-to-b from-ink/55 via-transparent to-ink/35" />
-          </>
-        )}
-        <span className="display relative text-[2.75rem] leading-none text-white">0{n + 1}</span>
-        <span
-          className={`relative grid size-12 place-items-center self-end rounded-full text-white shadow-[0_10px_24px_rgb(63_47_128/0.3)] transition-transform duration-500 ease-out-expo group-hover:scale-110 sm:self-start ${
-            dark ? "bg-ink" : "bg-roxo"
-          }`}
-        >
-          <Icon name={item.icon} size={22} />
-        </span>
-      </div>
-      <div className="flex flex-1 flex-col gap-3 p-3.5 sm:py-4">
-        <p className={`flex items-center gap-2 text-[0.75rem] font-semibold tracking-[0.1em] uppercase ${dark ? "text-ciano-200" : "text-roxo"}`}>
-          {item.especies}
-          {item.recomendado && (
-            <span className="rounded-full bg-ciano-200 px-2 py-0.5 text-[0.6875rem] tracking-normal text-ink normal-case">
-              Recomendado
-            </span>
-          )}
-        </p>
-        <h3 className="display text-[1.625rem]">{item.nome}</h3>
-        <p className={`text-[0.9375rem] leading-[1.55] ${dark ? "text-white/80" : "text-mute"}`}>{item.texto}</p>
-        <p className={`display mt-auto pt-2 text-[2rem] leading-none ${dark ? "text-ciano-200" : "text-roxo"}`}>{item.preco}</p>
-        <SplitButton href={item.cta.href} size="sm" variant={dark ? "light" : "ghost"} className="mt-1 w-fit">
-          {item.cta.label}
-        </SplitButton>
-      </div>
-    </article>
-  );
-}
-
 /**
- * Escolha o teste: painel roxo com os quatro testes. No desktop a secao trava na tela e
- * os cards correm na horizontal conforme a rolagem; no celular viram uma pilha.
+ * Escolha o seu teste, em formato de loja: cada teste e um produto, com foto, preco,
+ * quantidade e compra pelo WhatsApp. No Painel Saude o preco por kit cai conforme a quantidade.
  */
 export function Escolha() {
-  const wrap = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
-  const overflow = useRef(0);
-  const [height, setHeight] = useState<number | null>(null);
-  const reduced = useReducedMotion();
-  const pin = height !== null;
-
-  useEffect(() => {
-    const measure = () => {
-      const t = track.current;
-      const w = wrap.current;
-      if (!t || !w) return;
-      const can = !reduced && window.innerWidth >= 1024 && window.innerHeight >= 740;
-      if (!can) {
-        overflow.current = 0;
-        setHeight(null);
-        return;
-      }
-      const total = Array.from(t.children).reduce((sum, el) => sum + (el as HTMLElement).offsetWidth + 20, 0);
-      const pad = Math.max(20, (w.clientWidth - 1240) / 2 + 40);
-      overflow.current = Math.max(0, total - 20 + pad * 2 - w.clientWidth);
-      setHeight(window.innerHeight + overflow.current);
-    };
-    measure();
-    const t = setTimeout(measure, 400);
-    window.addEventListener("resize", measure);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener("resize", measure);
-    };
-  }, [reduced, pin]);
-
-  const { scrollYProgress } = useScroll({ target: wrap, offset: ["start start", "end end"] });
-  const x = useTransform(scrollYProgress, (v) => -v * overflow.current);
-
   return (
-    <section data-dark className="panel bg-roxo text-white">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-[30%] left-1/2 aspect-square w-[130%] -translate-x-1/2 rounded-full border border-white/10" />
-        <div className="absolute -top-[10%] left-1/2 aspect-square w-[95%] -translate-x-1/2 rounded-full border border-white/10" />
-        <div className="absolute -top-[420px] -right-[420px] size-[1000px] bg-[radial-gradient(closest-side,rgb(124_107_208/0.45),transparent)]" />
-      </div>
-
-      <div ref={wrap} className="relative" style={pin ? { height: height! } : undefined}>
-        <div
-          className={
-            pin ? "sticky top-0 flex h-screen flex-col justify-center gap-9 overflow-hidden" : "flex flex-col gap-12 py-24 md:py-32"
-          }
-        >
-          <div className="container-page">
+    <section id="loja" className="panel bg-paper py-24 md:py-32">
+      <div className="container-page">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
             <FadeUp>
-              <Tag tone="dark">Escolha o seu teste</Tag>
+              <Tag>Escolha o seu teste</Tag>
             </FadeUp>
             <Words
-              className="display mt-5 max-w-[900px] text-[clamp(1.9rem,3.4vw,3rem)]"
+              className="display mt-6 max-w-[820px] text-[clamp(1.9rem,3.4vw,3rem)] text-ink"
               parts={[
                 "Comece pelo Painel Saúde.",
-                { text: "Complete com o que o seu programa precisa.", className: "text-ciano-200" },
+                { text: "Complete com o que o seu programa precisa.", className: "text-roxo-400" },
               ]}
             />
           </div>
-
-          <motion.div
-            ref={track}
-            style={pin ? { x } : undefined}
-            className={
-              pin
-                ? "flex w-max items-stretch gap-5 px-[max(1.25rem,calc((100vw-1240px)/2+2.5rem))] will-change-transform"
-                : "container-page grid items-stretch gap-5 md:grid-cols-2"
-            }
-          >
-            {testes.map((item, n) => (
-              <CardTeste key={item.id} item={item} n={n} pin={pin} />
-            ))}
-          </motion.div>
-
-          {pin && (
-            <div className="container-page">
-              <div className="h-[3px] overflow-hidden rounded-full bg-white/15">
-                <motion.div className="h-full origin-left bg-ciano-200" style={{ scaleX: scrollYProgress }} />
-              </div>
-            </div>
-          )}
+          <FadeUp delay={0.1}>
+            <p className="max-w-[300px] text-[0.9375rem] text-mute">
+              Atendimento e pagamento pelo WhatsApp · em até 6x
+            </p>
+          </FadeUp>
         </div>
+
+        <div className="mt-12">
+          <Vitrine itens={testes} />
+        </div>
+
+        <FadeUp delay={0.1}>
+          <p className="mt-8 text-center text-[0.9375rem] text-mute">
+            Painel Saúde: R$ 619 por kit. Acima de 3 kits, R$ 529 cada; acima de 10, R$ 489 cada.
+          </p>
+        </FadeUp>
       </div>
     </section>
   );

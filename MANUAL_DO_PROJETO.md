@@ -34,6 +34,7 @@ A prévia sai fora dos buscadores (`noindex`).
 |---|---|---|
 | `/` | `src/app/page.tsx` | Hero com vídeo, selos, por que testar, escolha o teste, Ninhada Testada, como funciona, chamada final |
 | `/testes` | `src/app/testes/page.tsx` | Comparativo, como escolher, Painel Saúde, como é o laudo, coleta, testes complementares |
+| `/testes/[id]` | `src/app/testes/[id]/page.tsx` | Página de produto (painel, merle, avulsos, perfil), em formato de loja |
 | `/precos` | `src/app/precos/page.tsx` | Três faixas de preço, testes complementares, proposta |
 | `/programa-criador` | `src/app/programa-criador/page.tsx` | Como funciona, Ninhada Testada com certificado, benefícios, formulário |
 | `/aprenda` | `src/app/aprenda/page.tsx` | Guia de Cruzamento e Genética de Cores, em sete capítulos |
@@ -48,8 +49,13 @@ tabela que vira cartões, sanfona, lista) em `src/components/ui/Blocos.tsx`.
 - **Hero da home:** igual ao do Box4Vets (vídeo de DNA controlado pela rolagem, logo central
   que migra para o menu, box com vídeo que levanta da perspectiva).
 - **Selos:** faixa que corre sem parar abaixo do hero.
-- **Escolha o seu teste:** os quatro testes em rolagem horizontal travada (como "Como
-  funciona" no Vets).
+- **Escolha o seu teste:** vitrine em formato de loja. Cada teste é um produto com foto, preço,
+  seletor de quantidade e botão "Comprar", que abre o WhatsApp já com produto e quantidade.
+  No Painel Saúde o preço por kit cai sozinho conforme a quantidade (acima de 3 e de 10).
+  Testes avulsos são sob consulta, sem quantidade.
+- **Página de produto** (`src/components/sections/Loja.tsx`): galeria com miniaturas, preço,
+  faixas de desconto, quantidade, comprar, selos, três abas (Descrição, Como funciona,
+  Informações) e "Recomendados" com os outros produtos. "Saiba mais" e o rodapé levam a ela.
 - **Ninhada Testada (home):** painel escuro com os dois vídeos em stories.
 - **Como funciona:** passos numerados, um aberto por vez, avançando sozinhos.
 - **Como escolher (Testes):** quatro perguntas em abas, com a indicação ao lado.
@@ -118,3 +124,4 @@ Do projeto:
 **26/11/2026**
 - Projeto criado a partir da base do Box4Vets, com o conteúdo das seis páginas do protótipo.
 - Publicado no GitHub e no GitHub Pages.
+- "Escolha o seu teste" virou vitrine de loja e cada teste ganhou página de produto.
