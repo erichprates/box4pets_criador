@@ -74,23 +74,29 @@ indicação" e a chamada final das páginas Testes e Aprenda.
 
 ## 5. Mídia
 
-**Todas as fotos e vídeos são provisórios**, reaproveitados do Box4Vets. O protótipo
-descreve o que cada espaço pede:
+| Arquivo | Origem | Onde aparece |
+|---|---|---|
+| `hero-campo.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no campo, 12s) | Fundo do hero, controlado pela rolagem |
+| `faixa-canil.mp4` (+ `-mobile`, `.jpg`) | Envato (criadora com cão no canil, 7s) | Faixa com parallax da home |
+| `faixa-brincando.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no gramado, 7s) | Faixa com parallax do Programa Criador |
+| `story-brincando.mp4`, `story-canil.mp4` (+ `.jpg`) | Recortes verticais dos dois vídeos acima | Stories da Ninhada Testada (home) |
+| `hero-coleta.mp4` (+ `-mobile`, `.jpg`) | Vídeo do cliente | Box do hero, coleta (Testes) e galeria de produto. **Provisório**: mostra o kit "box4dog" |
+| `inovacao-*.jpg`, `abordagem-*.jpg`, `coleta.jpg` | Fotos do Box4Vets | Cards "Por que testar" e testes complementares. **Provisórias** |
+
+**Imagem dos produtos:** não é foto. É uma embalagem 3D desenhada em CSS
+(`src/components/ui/Caixa.tsx`), uma por produto, com o logo e o nome do teste, que flutua
+e gira com o mouse. As cores e a frase de cada caixa ficam no objeto `estilos` desse arquivo.
+A caixa é uma simulação: não reproduz a embalagem real do kit.
+
+O protótipo ainda pede estas imagens, que continuam sem material próprio:
 
 | Onde | O que o protótipo pede |
 |---|---|
-| Hero | Criador(a) segurando um filhote, com a mãe ao lado, em canil limpo; kit em primeiro plano |
 | Ninhada Testada (home) | Família recebendo o filhote e o certificado impresso com QR code |
 | Como funciona | Kit aberto; app no cadastro; swab na bochecha; laudo no app |
 | Programa Criador (topo) | Matriz e padreador no canil, com o selo "Canil Testado Box4Pets" |
 | Coleta (Testes) | Vídeo de 1 min com a coleta em um cão e em um gato |
-| Teste Merle | Pastor Australiano blue merle |
-| Testes avulsos | Bancada de laboratório com amostras |
-| Perfil de DNA | Pai, mãe e filhote ligados por linhas de DNA |
 | Cores (Aprenda) | Grade de oito cães, um por cor da tabela |
-
-Para trocar, aponte o campo `foto` em `src/content/site.ts` para o novo arquivo em
-`public/media`.
 
 ## 6. Como publicar a prévia do cliente
 
@@ -125,3 +131,4 @@ Do projeto:
 - Projeto criado a partir da base do Box4Vets, com o conteúdo das seis páginas do protótipo.
 - Publicado no GitHub e no GitHub Pages.
 - "Escolha o seu teste" virou vitrine de loja e cada teste ganhou página de produto.
+- Produtos com embalagem 3D em CSS; três vídeos novos (hero, faixas e stories).

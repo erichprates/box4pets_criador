@@ -11,7 +11,18 @@ import { Words } from "../motion/Words";
  * abre ate a largura toda e volta a recolher ao sair; o video anda mais devagar que a
  * pagina e so toca enquanto esta na tela. Uma frase no centro.
  */
-export function FaixaVideo({ linhas, destaque, rotulo }: { linhas: string[]; destaque?: string; rotulo: string }) {
+export function FaixaVideo({
+  linhas,
+  destaque,
+  rotulo,
+  midia = "faixa-canil",
+}: {
+  linhas: string[];
+  destaque?: string;
+  rotulo: string;
+  /** Nome do video em /public/media (sem extensao): usa <nome>.mp4, <nome>-mobile.mp4 e <nome>.jpg. */
+  midia?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const reduced = useReducedMotion();
@@ -43,11 +54,11 @@ export function FaixaVideo({ linhas, destaque, rotulo }: { linhas: string[]; des
         <motion.div
           aria-hidden
           className="absolute inset-x-0 -inset-y-[16%] bg-cover bg-center"
-          style={{ backgroundImage: `url(${asset("/media/lab.jpg")})`, ...(reduced ? {} : { y, scale }) }}
+          style={{ backgroundImage: `url(${asset(`/media/${midia}.jpg`)})`, ...(reduced ? {} : { y, scale }) }}
         >
           <video ref={video} muted loop playsInline preload="metadata" className="size-full object-cover">
-            <source src={asset("/media/lab-mobile.mp4")} type="video/mp4" media="(max-width: 767px)" />
-            <source src={asset("/media/lab.mp4")} type="video/mp4" />
+            <source src={asset(`/media/${midia}-mobile.mp4`)} type="video/mp4" media="(max-width: 767px)" />
+            <source src={asset(`/media/${midia}.mp4`)} type="video/mp4" />
           </video>
         </motion.div>
         <div aria-hidden className="absolute inset-0 bg-roxo/60 mix-blend-multiply" />

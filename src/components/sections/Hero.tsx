@@ -13,8 +13,8 @@ import { SplitButton } from "../ui/Button";
 import { ArrowRight, Icon } from "../ui/icons";
 import { Logo } from "../ui/Logo";
 
-/** O video comeca aqui (em segundos): antes disso e so um close desfocado. */
-const START = 2.2;
+/** Ponto em que o video comeca (em segundos). */
+const START = 0;
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -115,7 +115,7 @@ export function Hero() {
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
             className="sticky top-0 h-svh overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: `url(${asset("/media/hero-dna.jpg")})` }}
+            style={{ backgroundImage: `url(${asset("/media/hero-campo.jpg")})` }}
           >
             <video
               ref={video}
@@ -125,11 +125,11 @@ export function Hero() {
               onLoadedData={() => setReady(true)}
               className={`size-full object-cover transition-opacity duration-1000 ${ready ? "opacity-100" : "opacity-0"}`}
             >
-              <source src={asset("/media/hero-dna-mobile.mp4")} type="video/mp4" media="(max-width: 767px)" />
-              <source src={asset("/media/hero-dna.mp4")} type="video/mp4" />
+              <source src={asset("/media/hero-campo-mobile.mp4")} type="video/mp4" media="(max-width: 767px)" />
+              <source src={asset("/media/hero-campo.mp4")} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-roxo/65 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/45 to-roxo/70" />
+            <div className="absolute inset-0 bg-roxo/55 mix-blend-multiply" />
+            <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/30 to-roxo/65" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_62%_58%_at_50%_42%,rgb(15_9_40/0.72),transparent_72%)]" />
           </div>
         </div>

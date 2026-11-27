@@ -19,6 +19,7 @@ import {
 import { ease, viewport } from "@/lib/motion";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
+import { Caixa } from "../ui/Caixa";
 import { Check, Icon } from "../ui/icons";
 
 /** Preco unitario do Painel Saude conforme a quantidade (acima de 3 e acima de 10 kits). */
@@ -81,16 +82,8 @@ export function Produto({ item }: { item: Teste }) {
         show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
       }}
     >
-      <Link href={pagina} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3] overflow-hidden rounded-[14px] bg-paper">
-        {item.foto && (
-          <Image
-            src={item.foto}
-            alt=""
-            fill
-            sizes="(min-width: 1024px) 280px, (min-width: 640px) 46vw, 92vw"
-            className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-110"
-          />
-        )}
+      <Link href={pagina} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.4] overflow-hidden rounded-[14px] bg-paper">
+        <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
         <span className="absolute top-3 left-3 flex flex-wrap gap-1.5">
           {item.recomendado && (
             <span className="rounded-full bg-roxo px-2.5 py-1 text-[0.6875rem] font-semibold text-white">Recomendado</span>
@@ -165,13 +158,14 @@ export function Vitrine({ itens }: { itens: Teste[] }) {
 }
 
 /** Fotos provisorias da galeria: a do produto e duas de apoio. */
-const apoio = ["/media/hero-coleta.jpg", "/media/lab.jpg"];
+const apoio = ["/media/hero-coleta.jpg", "/media/faixa-canil.jpg"];
 
 /** Pagina de produto, em formato de loja. */
 export function PaginaProduto({ id }: { id: string }) {
   const item = testes.find((t) => t.id === id)!;
   const { q, setQ, base, preco, desconto, href } = useCompra(item);
-  const fotos = [item.foto, ...apoio].filter((f): f is string => !!f);
+  // A primeira "foto" da galeria e a embalagem em 3D; as demais sao fotos de apoio.
+  const fotos: (string | null)[] = [null, ...apoio];
   const [foto, setFoto] = useState(0);
   const [aba, setAba] = useState(0);
   const info = comparativo.find((c) => c.teste === item.nome)!;
@@ -291,17 +285,25 @@ export function PaginaProduto({ id }: { id: string }) {
                 animate={{ clipPath: "inset(0% 0% 0% 0% round 28px)", opacity: 1 }}
                 transition={{ duration: 1.2, ease: ease.out }}
               >
-                {fotos.map((f, n) => (
-                  <Image
-                    key={f}
-                    src={f}
-                    alt={n === 0 ? item.nome : ""}
-                    fill
-                    priority={n === 0}
-                    sizes="(min-width: 1024px) 600px, 94vw"
-                    className={`object-cover transition-opacity duration-500 ${n === foto ? "opacity-100" : "opacity-0"}`}
-                  />
-                ))}
+                {fotos.map((f, n) =>
+                  f === null ? (
+                    <Caixa
+                      key="caixa"
+                      id={item.id}
+                      nome={item.nome}
+                      className={`absolute inset-0 transition-opacity duration-500 ${n === foto ? "opacity-100" : "pointer-events-none opacity-0"}`}
+                    />
+                  ) : (
+                    <Image
+                      key={f}
+                      src={f}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 600px, 94vw"
+                      className={`object-cover transition-opacity duration-500 ${n === foto ? "opacity-100" : "pointer-events-none opacity-0"}`}
+                    />
+                  ),
+                )}
                 {item.recomendado && (
                   <span className="absolute top-4 left-4 rounded-full bg-roxo px-3 py-1.5 text-[0.75rem] font-semibold text-white">Recomendado</span>
                 )}
@@ -309,7 +311,7 @@ export function PaginaProduto({ id }: { id: string }) {
               <div className="grid grid-cols-4 gap-3">
                 {fotos.map((f, n) => (
                   <button
-                    key={f}
+                    key={f ?? "caixa"}
                     type="button"
                     aria-label={`Foto ${n + 1}`}
                     aria-pressed={n === foto}
@@ -318,7 +320,11 @@ export function PaginaProduto({ id }: { id: string }) {
                       n === foto ? "ring-2 ring-roxo ring-offset-2" : "opacity-70 hover:opacity-100"
                     }`}
                   >
-                    <Image src={f} alt="" fill sizes="140px" className="object-cover" />
+                    {f === null ? (
+                      <Caixa id={item.id} nome={item.nome} className="pointer-events-none absolute inset-0" />
+                    ) : (
+                      <Image src={f} alt="" fill sizes="140px" className="object-cover" />
+                    )}
                   </button>
                 ))}
               </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FaixaVideo } from "@/components/sections/FaixaVideo";
 import { Header } from "@/components/sections/Header";
 import { Passos } from "@/components/sections/Passos";
 import { Beneficios, Ninhada, Participar } from "@/components/sections/Programa";
@@ -38,6 +39,11 @@ export default function Page() {
             <Passos itens={programaPassos} />
           </div>
         </section>
+        <FaixaVideo
+          rotulo="Cães brincando no gramado"
+          midia="faixa-brincando"
+          linhas={["Você entrega ao comprador", "uma prova, não uma promessa."]}
+        />
         <Ninhada />
         <Beneficios />
         <Fecho

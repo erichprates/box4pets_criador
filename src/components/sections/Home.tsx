@@ -221,8 +221,8 @@ export function NinhadaHome() {
           </FadeUp>
         </div>
         <div className="flex justify-center gap-4 lg:justify-end">
-          <Story nome="story-cao" alt="Veterinária sorrindo para um cão na clínica" distance={30} className="w-[44%] max-w-[230px] lg:mt-16" />
-          <Story nome="story-gato" alt="Veterinário segurando um gato no consultório" distance={-30} className="w-[44%] max-w-[230px] lg:mb-16" />
+          <Story nome="story-brincando" alt="Dois cães brincando no gramado" distance={30} className="w-[44%] max-w-[230px] lg:mt-16" />
+          <Story nome="story-canil" alt="Criadora fazendo carinho em um cão no canil" distance={-30} className="w-[44%] max-w-[230px] lg:mb-16" />
         </div>
       </div>
     </section>

@@ -49,7 +49,7 @@ export default function Home() {
           </div>
         </section>
         <FaixaVideo
-          rotulo="Laboratório"
+          rotulo="Criadora com um cão no canil"
           linhas={["Teste seu plantel", "antes da próxima ninhada."]}
           destaque="R$ 619 por kit. Acima de 3 kits, R$ 529 cada; acima de 10, R$ 489 cada."
         />
