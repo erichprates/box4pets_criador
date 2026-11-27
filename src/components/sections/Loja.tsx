@@ -164,16 +164,10 @@ export function Vitrine({ itens }: { itens: Teste[] }) {
   );
 }
 
-/** Fotos provisorias da galeria: a do produto e duas de apoio. */
-const apoio = ["/media/hero-coleta.jpg", "/media/faixa-canil.jpg"];
-
 /** Pagina de produto, em formato de loja. */
 export function PaginaProduto({ id }: { id: string }) {
   const item = testes.find((t) => t.id === id)!;
   const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
-  // A primeira "foto" da galeria e a embalagem em 3D; as demais sao fotos de apoio.
-  const fotos: (string | null)[] = [null, ...apoio];
-  const [foto, setFoto] = useState(0);
   const [aba, setAba] = useState(0);
   const info = comparativo.find((c) => c.teste === item.nome)!;
   const longo = complementares.find((c) => c.id === id)?.texto;
@@ -284,7 +278,7 @@ export function PaginaProduto({ id }: { id: string }) {
           </nav>
 
           <div className="mt-6 grid items-start gap-10 lg:grid-cols-[1.08fr_1fr] lg:gap-16">
-            {/* Galeria */}
+            {/* Imagem do produto: so a embalagem 3D. */}
             <div className="flex flex-col gap-3 lg:sticky lg:top-24">
               <motion.div
                 className="relative aspect-square overflow-hidden rounded-panel bg-paper"
@@ -292,49 +286,11 @@ export function PaginaProduto({ id }: { id: string }) {
                 animate={{ clipPath: "inset(0% 0% 0% 0% round 28px)", opacity: 1 }}
                 transition={{ duration: 1.2, ease: ease.out }}
               >
-                {fotos.map((f, n) =>
-                  f === null ? (
-                    <Caixa
-                      key="caixa"
-                      id={item.id}
-                      nome={item.nome}
-                      className={`absolute inset-0 transition-opacity duration-500 ${n === foto ? "opacity-100" : "pointer-events-none opacity-0"}`}
-                    />
-                  ) : (
-                    <Image
-                      key={f}
-                      src={f}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1024px) 600px, 94vw"
-                      className={`object-cover transition-opacity duration-500 ${n === foto ? "opacity-100" : "pointer-events-none opacity-0"}`}
-                    />
-                  ),
-                )}
+                <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
                 {item.recomendado && (
                   <span className="absolute top-4 left-4 rounded-full bg-roxo px-3 py-1.5 text-[0.75rem] font-semibold text-white">Recomendado</span>
                 )}
               </motion.div>
-              <div className="grid grid-cols-4 gap-3">
-                {fotos.map((f, n) => (
-                  <button
-                    key={f ?? "caixa"}
-                    type="button"
-                    aria-label={`Foto ${n + 1}`}
-                    aria-pressed={n === foto}
-                    onClick={() => setFoto(n)}
-                    className={`relative aspect-square cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 ${
-                      n === foto ? "ring-2 ring-roxo ring-offset-2" : "opacity-70 hover:opacity-100"
-                    }`}
-                  >
-                    {f === null ? (
-                      <Caixa id={item.id} nome={item.nome} className="pointer-events-none absolute inset-0" />
-                    ) : (
-                      <Image src={f} alt="" fill sizes="140px" className="object-cover" />
-                    )}
-                  </button>
-                ))}
-              </div>
             </div>
 
             {/* Compra */}
