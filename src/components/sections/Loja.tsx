@@ -24,20 +24,24 @@ import { Check, Icon } from "../ui/icons";
 
 /** Preco unitario do Painel Saude conforme a quantidade (acima de 3 e acima de 10 kits). */
 const precoPainel = (q: number) => (q > 10 ? 489 : q > 3 ? 529 : 619);
-const unitario: Record<string, number | null> = { painel: 619, merle: 450, avulsos: null, perfil: 489 };
+const unitario: Record<string, number> = { painel: 619, merle: 450, avulsos: 450, perfil: 489 };
 const brl = (v: number) => `R$ ${v.toLocaleString("pt-BR")}`;
 
-/** Quantidade, preco e link de compra de um produto. Os testes avulsos sao sob consulta. */
+/**
+ * Quantidade, preco e link de compra de um produto. Nos testes avulsos cada unidade e um
+ * teste diferente (R$ 450 cada), entao o botao abre a conversa para escolher quais.
+ */
 function useCompra(item: Teste) {
   const [q, setQ] = useState(1);
   const base = unitario[item.id];
   const preco = item.id === "painel" ? precoPainel(q) : base;
   const desconto = item.id === "painel" && preco !== 619;
-  const href =
-    base === null
-      ? links.avulso
-      : `${links.whatsapp}?text=${encodeURIComponent(`Olá! Vim pelo site e quero pedir ${q} ${q > 1 ? "kits" : "kit"} de ${item.nome}.`)}`;
-  return { q, setQ, base, preco, desconto, href };
+  const consulta = item.id === "avulsos";
+  const href = consulta
+    ? `${links.whatsapp}?text=${encodeURIComponent(`Olá! Procuro ${q > 1 ? `${q} testes que não estão` : "um teste que não está"} no Painel Saúde. Podem me ajudar?`)}`
+    : `${links.whatsapp}?text=${encodeURIComponent(`Olá! Vim pelo site e quero pedir ${q} ${q > 1 ? "kits" : "kit"} de ${item.nome}.`)}`;
+  const unidade = consulta ? "teste" : "kit";
+  return { q, setQ, preco, desconto, href, consulta, unidade };
 }
 
 function Quantidade({ q, setQ, nome, grande = false }: { q: number; setQ: (f: (v: number) => number) => void; nome: string; grande?: boolean }) {
@@ -70,7 +74,7 @@ function Quantidade({ q, setQ, nome, grande = false }: { q: number; setQ: (f: (v
 
 /** Produto da vitrine: foto, selos, nome, preco, quantidade e compra pelo WhatsApp. */
 export function Produto({ item }: { item: Teste }) {
-  const { q, setQ, base, preco, desconto, href } = useCompra(item);
+  const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
   const pagina = `/testes/${item.id}`;
   return (
     <motion.article
@@ -104,29 +108,32 @@ export function Produto({ item }: { item: Teste }) {
 
         <div className="mt-auto pt-4">
           <p className="display flex flex-wrap items-baseline gap-x-2 text-[1.875rem] leading-none text-ink">
-            {preco === null ? item.preco : brl(preco)}
+            {brl(preco)}
             {desconto && <s className="font-sans text-[0.9375rem] font-normal text-mute">R$ 619</s>}
+            <span className="font-sans text-[0.875rem] font-normal text-mute">/{unidade}</span>
           </p>
           <p className="mt-1.5 min-h-[1.25rem] text-[0.8125rem] text-ciano-700">
             {item.id === "painel"
               ? desconto
-                ? `por kit · total ${brl(preco! * q)}`
-                : "em até 6x sem juros · frete grátis"
-              : preco !== null && q > 1
                 ? `total ${brl(preco * q)}`
-                : ""}
+                : "em até 6x sem juros · frete grátis"
+              : q > 1
+                ? `total ${brl(preco * q)}`
+                : consulta
+                  ? "cada teste fora do Painel Saúde"
+                  : ""}
           </p>
         </div>
 
         <div className="mt-2 flex gap-2">
-          {base !== null && <Quantidade q={q} setQ={setQ} nome={item.nome} />}
+          <Quantidade q={q} setQ={setQ} nome={item.nome} />
           <a
             href={href}
             target="_blank"
             rel="noopener"
             className="flex h-12 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-3 text-[0.9375rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
           >
-            {base === null ? "Consultar" : "Comprar"}
+            {consulta ? "Consultar" : "Comprar"}
           </a>
         </div>
         <Link
@@ -163,7 +170,7 @@ const apoio = ["/media/hero-coleta.jpg", "/media/faixa-canil.jpg"];
 /** Pagina de produto, em formato de loja. */
 export function PaginaProduto({ id }: { id: string }) {
   const item = testes.find((t) => t.id === id)!;
-  const { q, setQ, base, preco, desconto, href } = useCompra(item);
+  const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
   // A primeira "foto" da galeria e a embalagem em 3D; as demais sao fotos de apoio.
   const fotos: (string | null)[] = [null, ...apoio];
   const [foto, setFoto] = useState(0);
@@ -343,13 +350,13 @@ export function PaginaProduto({ id }: { id: string }) {
 
               <div className="mt-7 rounded-panel bg-paper p-6 md:p-7">
                 <p className="display flex flex-wrap items-baseline gap-x-3 text-[3rem] leading-none text-ink">
-                  {preco === null ? item.preco : brl(preco)}
+                  {brl(preco)}
                   {desconto && <s className="font-sans text-[1.125rem] font-normal text-mute">R$ 619</s>}
-                  {preco !== null && <span className="font-sans text-[1rem] font-normal text-mute">/kit</span>}
+                  <span className="font-sans text-[1rem] font-normal text-mute">/{unidade}</span>
                 </p>
                 <p className="mt-2 text-[0.9375rem] text-ciano-700">
                   {painel ? "em até 6x sem juros · frete grátis" : "Atendimento e pagamento pelo WhatsApp · em até 6x"}
-                  {preco !== null && q > 1 && <strong className="ml-2 font-semibold text-ink">Total {brl(preco * q)}</strong>}
+                  {q > 1 && <strong className="ml-2 font-semibold text-ink">Total {brl(preco * q)}</strong>}
                 </p>
 
                 {painel && (
@@ -372,14 +379,14 @@ export function PaginaProduto({ id }: { id: string }) {
                 )}
 
                 <div className="mt-5 flex gap-2">
-                  {base !== null && <Quantidade q={q} setQ={setQ} nome={item.nome} grande />}
+                  <Quantidade q={q} setQ={setQ} nome={item.nome} grande />
                   <a
                     href={href}
                     target="_blank"
                     rel="noopener"
                     className="flex h-14 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-4 text-[1rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
                   >
-                    {base === null ? "Consultar pelo WhatsApp" : "Comprar pelo WhatsApp"}
+                    {consulta ? "Consultar pelo WhatsApp" : "Comprar pelo WhatsApp"}
                   </a>
                 </div>
                 <a

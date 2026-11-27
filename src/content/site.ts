@@ -63,26 +63,26 @@ export const porque: { titulo: string; texto: string; icon: IconName; foto?: str
     texto:
       "Saiba quais reprodutores são portadores antes de planejar o cruzamento. Dois portadores podem gerar 25% de filhotes afetados em cada ninhada.",
     icon: "searchCheck",
-    foto: "/media/abordagem-preditiva.jpg",
+    foto: "/media/porque-ninhada.jpg",
   },
   {
     titulo: "Não descarte bons reprodutores",
     texto: "Um portador saudável continua valioso: basta cruzá-lo com um parceiro livre da mesma mutação.",
     icon: "heart",
-    foto: "/media/inovacao-preditivo.jpg",
+    foto: "/media/porque-reprodutor.jpg",
   },
   {
     titulo: "Valorize cada filhote",
     texto:
       "Entregue ao comprador um laudo genético junto com o pedigree. É transparência que justifica o preço.",
     icon: "paw",
-    foto: "/media/inovacao-confirmacao.jpg",
+    foto: "/media/porque-filhote.jpg",
   },
   {
     titulo: "Proteja o nome do seu canil ou gatil",
     texto: "Menos doença hereditária significa mais qualidade.",
     icon: "clinic",
-    foto: "/media/abordagem-diagnostico.jpg",
+    foto: "/media/porque-canil.jpg",
   },
 ];
 

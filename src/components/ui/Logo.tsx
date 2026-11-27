@@ -2,9 +2,18 @@
  * Logo box4pets criador. `mono` pinta as letras com a cor do texto (para fundo roxo ou
  * escuro); a etiqueta "criador" continua clara, com as letras escuras por dentro.
  */
-export function Logo({ mono = false, className = "" }: { mono?: boolean; className?: string }) {
+export function Logo({
+  mono = false,
+  destaque,
+  className = "",
+}: {
+  mono?: boolean;
+  /** Cor do "4" e da etiqueta, quando o fundo ja e da cor padrao deles. */
+  destaque?: string;
+  className?: string;
+}) {
   const main = mono ? "currentColor" : "#3f2f80";
-  const accent = mono ? "#8fe3f2" : "#60c7cf";
+  const accent = destaque ?? (mono ? "#8fe3f2" : "#60c7cf");
   const pill = mono ? "#1b123d" : "#3f2f80";
   return (
     <svg

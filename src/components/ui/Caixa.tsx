@@ -6,7 +6,10 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Logo } from "./Logo";
 
 /** Aparencia da embalagem de cada produto. */
-const estilos: Record<string, { frente: string; lado: string; topo: string; faixa: string; texto: string; linha: string }> = {
+const estilos: Record<
+  string,
+  { frente: string; lado: string; topo: string; faixa: string; texto: string; linha: string; destaque?: string }
+> = {
   painel: {
     frente: "linear-gradient(160deg,#4b3a96 0%,#3f2f80 55%,#2c2060 100%)",
     lado: "linear-gradient(180deg,#2c2060,#1f1647)",
@@ -30,6 +33,8 @@ const estilos: Record<string, { frente: string; lado: string; topo: string; faix
     faixa: "#3f2f80",
     texto: "#1b123d",
     linha: "Mais de 400 testes para cães e gatos",
+    // A caixa ja e da cor do "4" do logo: ele e a etiqueta ficam brancos.
+    destaque: "#ffffff",
   },
   perfil: {
     frente: "linear-gradient(160deg,#ffffff 0%,#f1eefb 55%,#ddd5f5 100%)",
@@ -92,12 +97,12 @@ export function Caixa({ id, nome, className = "" }: { id: string; nome: string; 
         >
           {/* Frente */}
           <div
-            className={`${face} flex h-[14.6em] w-[10.6em] flex-col justify-between overflow-hidden rounded-[0.35em] p-[1em]`}
+            className={`${face} flex h-[14.6em] w-[10.6em] flex-col justify-between overflow-hidden p-[1em]`}
             style={{ background: e.frente, color: e.texto, transform: "translate(-50%,-50%) translateZ(1.7em)" }}
           >
             <span className="absolute -top-[30%] -right-[40%] aspect-square w-[120%] rounded-full border" style={{ borderColor: claro ? "rgb(255 255 255 / 0.14)" : "rgb(27 18 61 / 0.1)" }} />
             <span className="absolute -top-[10%] -right-[20%] aspect-square w-[80%] rounded-full border" style={{ borderColor: claro ? "rgb(255 255 255 / 0.14)" : "rgb(27 18 61 / 0.1)" }} />
-            <Logo mono={claro} className="relative h-[2.3em] w-auto self-start" />
+            <Logo mono={claro} destaque={e.destaque} className="relative h-[2.3em] w-auto self-start" />
             <div className="relative">
               <p className="text-[0.55em] font-semibold tracking-[0.18em] uppercase opacity-70">Teste genético</p>
               <p className="display mt-[0.25em] text-[1.55em] leading-[1.02]">{nome}</p>
@@ -109,7 +114,7 @@ export function Caixa({ id, nome, className = "" }: { id: string; nome: string; 
           </div>
           {/* Fundo */}
           <div
-            className={`${face} h-[14.6em] w-[10.6em] rounded-[0.35em]`}
+            className={`${face} h-[14.6em] w-[10.6em]`}
             style={{ background: e.lado, transform: "translate(-50%,-50%) rotateY(180deg) translateZ(1.7em)" }}
           />
           {/* Lateral direita */}
