@@ -2,13 +2,14 @@ import type { ReactNode } from "react";
 import { asset } from "@/lib/base";
 import { ArrowUpRight, Cartao, WhatsApp } from "./icons";
 
-type Variant = "primary" | "light" | "outline" | "ghost";
+type Variant = "primary" | "light" | "outline" | "ghost" | "aqua";
 
 const tone: Record<Variant, string> = {
   primary: "bg-roxo text-white hover:bg-roxo-700",
   light: "bg-white text-ink hover:bg-lilas",
   outline: "border border-white/50 text-white hover:bg-white/10",
   ghost: "border border-line bg-white text-ink hover:border-roxo/40",
+  aqua: "bg-ciano-200 text-ink hover:bg-white",
 };
 
 /** Cor do quadradinho da seta, dentro do botao. */
@@ -17,6 +18,7 @@ const chip: Record<Variant, string> = {
   light: "bg-roxo text-white",
   outline: "bg-white/15",
   ghost: "bg-lilas text-roxo",
+  aqua: "bg-ink/10 text-ink",
 };
 
 /**

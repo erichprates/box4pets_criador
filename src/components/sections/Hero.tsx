@@ -3,14 +3,13 @@
 import { asset } from "@/lib/base";
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { selos } from "@/content/site";
 import { ease } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
 import { Pagamento, SplitButton } from "../ui/Button";
-import { ArrowRight, Icon } from "../ui/icons";
+import { Icon } from "../ui/icons";
 import { Logo } from "../ui/Logo";
 
 export function Hero() {
@@ -130,18 +129,12 @@ export function Hero() {
               <SplitButton href="#loja" variant="light" external={false} className="max-md:w-full max-md:justify-between">
                 Adquira o teste
               </SplitButton>
-              <SplitButton href="/testes" variant="outline" external={false} className="max-md:hidden">
+              <SplitButton href="/testes" variant="aqua" external={false} className="max-md:hidden">
                 Conhecer os testes
               </SplitButton>
-              <Link
-                href="/programa-criador"
-                className="group inline-flex h-13 items-center gap-2 px-3 text-[0.9375rem] font-medium text-white max-md:hidden"
-              >
-                <span className="border-b border-white/40 pb-0.5 transition-colors group-hover:border-white">
-                  Conhecer o Programa Criador
-                </span>
-                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+              <SplitButton href="/programa-criador" variant="outline" external={false} className="max-md:hidden">
+                Conhecer o Programa Criador
+              </SplitButton>
             </motion.div>
             <motion.div
               className="mt-5"
@@ -225,16 +218,12 @@ export function Hero() {
             </FadeUp>
             <FadeUp delay={0.15} className="md:hidden">
               <div className="flex flex-col gap-3">
-                <SplitButton href="/testes" variant="outline" external={false} className="w-full justify-between">
+                <SplitButton href="/testes" variant="aqua" external={false} className="w-full justify-between">
                   Conhecer os testes
                 </SplitButton>
-                <Link
-                  href="/programa-criador"
-                  className="flex h-13 items-center justify-between rounded-xl bg-white/10 pr-4 pl-5 text-[0.9375rem] font-medium text-white"
-                >
+                <SplitButton href="/programa-criador" variant="outline" external={false} className="w-full justify-between">
                   Conhecer o Programa Criador
-                  <ArrowRight size={18} />
-                </Link>
+                </SplitButton>
               </div>
             </FadeUp>
           </div>
