@@ -9,7 +9,7 @@ import { ease } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
-import { SplitButton } from "../ui/Button";
+import { Pagamento, SplitButton } from "../ui/Button";
 import { ArrowRight, Icon } from "../ui/icons";
 import { Logo } from "../ui/Logo";
 
@@ -142,14 +142,14 @@ export function Hero() {
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </motion.div>
-            <motion.p
-              className="mt-4 text-[0.875rem] text-white/70"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, delay: 1.2 }}
+            <motion.div
+              className="mt-5"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: ease.out, delay: 1.2 }}
             >
-              Atendimento e pagamento pelo WhatsApp · em até 6x
-            </motion.p>
+              <Pagamento escuro className="justify-center" />
+            </motion.div>
           </div>
 
           {/* Video da coleta, sem moldura: abre de baixo para cima e levanta da perspectiva com a rolagem. */}

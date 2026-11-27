@@ -10,7 +10,7 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
 import { Lista, Titulo } from "../ui/Blocos";
-import { SplitButton, Tag } from "../ui/Button";
+import { Pagamento, SplitButton, Tag } from "../ui/Button";
 import { Icon } from "../ui/icons";
 import { Vitrine } from "./Loja";
 
@@ -113,9 +113,7 @@ export function Escolha() {
             />
           </div>
           <FadeUp delay={0.1}>
-            <p className="max-w-[300px] text-[0.9375rem] text-mute">
-              Atendimento e pagamento pelo WhatsApp · em até 6x
-            </p>
+            <Pagamento className="lg:max-w-[340px] lg:justify-end" />
           </FadeUp>
         </div>
 

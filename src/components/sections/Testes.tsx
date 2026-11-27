@@ -19,36 +19,7 @@ import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
 import { Lista, Tabela, Titulo } from "../ui/Blocos";
 import { Rich, SplitButton } from "../ui/Button";
-import { Check, Icon } from "../ui/icons";
-
-/** As opcoes lado a lado: tabela no desktop, cartoes no celular. */
-export function Comparativo() {
-  return (
-    <section className="py-24 md:py-32">
-      <div className="container-page">
-        <Titulo titulo="As opções lado a lado" className="mb-10" />
-        <Tabela
-          colunas={["Teste", "O que avalia", "Espécies", "Quem realiza", "Preço"]}
-          linhas={comparativo.map((c) => [
-            <span key="t" className="flex flex-wrap items-center gap-2">
-              {c.teste}
-              {c.recomendado && (
-                <span className="rounded-full bg-ciano px-2 py-0.5 text-[0.6875rem] font-semibold text-ink">Recomendado</span>
-              )}
-            </span>,
-            c.avalia,
-            c.especies,
-            c.realiza,
-            <span key="p" className="whitespace-nowrap">
-              <strong className="font-semibold text-ink">{c.preco}</strong>
-              {c.nota && <span className="block text-[0.8125rem] whitespace-normal text-mute">{c.nota}</span>}
-            </span>,
-          ])}
-        />
-      </div>
-    </section>
-  );
-}
+import { BlocoProduto, ComparativoLoja } from "./Loja";
 
 /** Como escolher: quatro perguntas a esquerda, a resposta grande a direita. */
 export function ComoEscolher() {
@@ -109,83 +80,6 @@ export function ComoEscolher() {
             })}
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/** Painel Saude: descricao + cartao de preco. */
-export function PainelSaude() {
-  return (
-    <section id="painel" className="py-24 md:py-36">
-      <div className="container-page grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-        <div>
-          <Titulo tag="Produto principal" titulo="Painel Saúde" />
-          <FadeUp delay={0.1}>
-            <p className="mt-5 text-[1.1875rem] leading-[1.5] text-ink md:text-[1.375rem]">
-              O Painel Saúde avalia 220 doenças genéticas em cães e 39 doenças e variantes em gatos, incluindo as
-              recomendadas para a raça do seu animal.
-            </p>
-          </FadeUp>
-          <motion.ul
-            className="mt-8 grid gap-3 sm:grid-cols-2"
-            initial="hidden"
-            whileInView="show"
-            viewport={viewport}
-            transition={{ staggerChildren: 0.08 }}
-          >
-            {painelDestaques.map((d) => (
-              <motion.li
-                key={d}
-                className="flex items-center gap-3 rounded-2xl bg-paper p-4 text-[0.9375rem] font-medium text-ink"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.out } },
-                }}
-              >
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-roxo text-white">
-                  <Check size={14} strokeWidth={2.6} />
-                </span>
-                {d}
-              </motion.li>
-            ))}
-          </motion.ul>
-          <FadeUp delay={0.15}>
-            <a
-              href={links.pendente}
-              className="mt-6 inline-flex min-h-11 items-center font-semibold text-roxo underline decoration-roxo/30 underline-offset-4 hover:decoration-roxo"
-            >
-              Ver a lista completa de doenças →
-            </a>
-          </FadeUp>
-        </div>
-
-        <FadeUp delay={0.1}>
-          <div data-dark className="relative overflow-hidden rounded-panel bg-roxo p-8 text-white shadow-[0_30px_70px_rgb(63_47_128/0.35)] md:p-10">
-            <div aria-hidden className="absolute -top-40 -right-40 size-[420px] bg-[radial-gradient(closest-side,rgb(124_107_208/0.6),transparent)]" />
-            <p className="relative text-[0.8125rem] font-semibold tracking-[0.1em] text-ciano-200 uppercase">Painel Saúde · 1 animal</p>
-            <p className="display relative mt-3 text-[4.5rem] leading-none">
-              R$ <Counter value={619} />
-            </p>
-            <p className="relative mt-3 text-white/80">em até 6x sem juros · frete grátis</p>
-            <ul className="relative mt-6 flex flex-col text-[0.9375rem]">
-              <li className="flex justify-between gap-4 border-t border-white/15 py-3">
-                <span>por kit acima de 3 kits</span>
-                <strong className="font-semibold text-ciano-200">R$ 529</strong>
-              </li>
-              <li className="flex justify-between gap-4 border-t border-white/15 py-3">
-                <span>por kit acima de 10 kits</span>
-                <strong className="font-semibold text-ciano-200">R$ 489</strong>
-              </li>
-            </ul>
-            <SplitButton href={links.pedir} variant="light" className="relative mt-6 w-full justify-between">
-              Pedir pelo WhatsApp
-            </SplitButton>
-            <p className="relative mt-4 text-[0.875rem] text-white/70">
-              Cria raça merle? Pergunte também pelo Teste Merle detalhado.
-            </p>
-          </div>
-        </FadeUp>
       </div>
     </section>
   );
@@ -338,7 +232,38 @@ export function Coleta() {
   );
 }
 
-/** Testes complementares: tres blocos com foto, alternando o lado. */
+/** As opcoes lado a lado, em formato de comparador de loja. */
+export function Comparativo() {
+  return (
+    <section className="py-24 md:py-32">
+      <div className="container-page">
+        <Titulo titulo="As opções lado a lado" className="mb-10" />
+        <ComparativoLoja />
+      </div>
+    </section>
+  );
+}
+
+/** Painel Saude: o produto principal, com a caixa e a compra. */
+export function PainelSaude() {
+  return (
+    <section className="panel bg-paper py-24 md:py-32">
+      <div className="container-page">
+        <BlocoProduto id="painel" destaque />
+        <FadeUp delay={0.1}>
+          <p className="mt-6 text-center text-[0.9375rem] text-mute">
+            Cria raça merle? Pergunte também pelo Teste Merle detalhado.{" "}
+            <a href={links.pendente} className="font-semibold text-roxo underline decoration-roxo/30 underline-offset-4">
+              Ver a lista completa de doenças →
+            </a>
+          </p>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/** Testes complementares: um bloco de produto para cada, alternando o lado da caixa. */
 export function Complementares() {
   return (
     <section className="panel bg-paper py-24 md:py-32">
@@ -346,35 +271,7 @@ export function Complementares() {
         <Titulo titulo="Testes complementares" className="mb-12 md:mb-16" />
         <div className="flex flex-col gap-5">
           {complementares.map((c, i) => (
-            <FadeUp key={c.id}>
-              <article
-                id={c.id}
-                className="group grid scroll-mt-28 gap-2.5 rounded-panel bg-white p-2.5 lg:grid-cols-[0.8fr_1fr]"
-              >
-                <div className={`grad-card relative min-h-[240px] overflow-hidden rounded-[20px] ${i % 2 ? "lg:order-2" : ""}`}>
-                  {c.foto && (
-                    <Image
-                      src={c.foto}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1024px) 480px, 92vw"
-                      className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-105"
-                    />
-                  )}
-                  <span className="absolute bottom-4 left-4 grid size-12 place-items-center rounded-full bg-roxo text-white">
-                    <Icon name={c.icon} size={22} />
-                  </span>
-                </div>
-                <div className="flex flex-col gap-4 p-5 md:p-9">
-                  <h3 className="display text-title text-ink">{c.nome}</h3>
-                  <p className="text-mute">{c.texto}</p>
-                  <p className="display mt-auto pt-2 text-[2rem] leading-none text-roxo">{c.preco}</p>
-                  <SplitButton href={c.cta.href} className="w-fit max-sm:w-full max-sm:justify-between max-sm:whitespace-normal">
-                    {c.cta.label}
-                  </SplitButton>
-                </div>
-              </article>
-            </FadeUp>
+            <BlocoProduto key={c.id} id={c.id} invertido={i % 2 === 0} />
           ))}
         </div>
       </div>

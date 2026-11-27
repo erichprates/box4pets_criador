@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { asset } from "@/lib/base";
-import { ArrowUpRight } from "./icons";
+import { ArrowUpRight, Cartao, WhatsApp } from "./icons";
 
 type Variant = "primary" | "light" | "outline" | "ghost";
 
@@ -100,5 +100,39 @@ export function Rich({ text, strong = "font-semibold text-ink" }: { text: string
         ),
       )}
     </>
+  );
+}
+
+/**
+ * Destaque de atendimento e pagamento, como em loja: selo do WhatsApp + selo do cartao.
+ * `parcelas` troca o texto do cartao (ex: "em até 6x sem juros · frete grátis").
+ */
+export function Pagamento({
+  escuro = false,
+  parcelas = "em até 6x",
+  className = "",
+}: {
+  escuro?: boolean;
+  parcelas?: string;
+  className?: string;
+}) {
+  const chip = `flex items-center gap-2.5 rounded-full py-1.5 pr-4 pl-1.5 text-[0.875rem] font-medium ${
+    escuro ? "border border-white/20 bg-white/10 text-white backdrop-blur" : "border border-line bg-white text-ink"
+  }`;
+  return (
+    <p className={`flex flex-wrap items-center gap-2 ${className}`}>
+      <span className={chip}>
+        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-[#25d366] text-white">
+          <WhatsApp size={18} />
+        </span>
+        Atendimento e pagamento pelo WhatsApp
+      </span>
+      <span className={chip}>
+        <span className={`grid size-8 shrink-0 place-items-center rounded-full ${escuro ? "bg-ciano-200 text-ink" : "bg-roxo text-white"}`}>
+          <Cartao size={18} />
+        </span>
+        {parcelas}
+      </span>
+    </p>
   );
 }

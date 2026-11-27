@@ -19,6 +19,7 @@ import {
 import { ease, viewport } from "@/lib/motion";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
+import { Pagamento } from "../ui/Button";
 import { Caixa } from "../ui/Caixa";
 import { Check, Icon } from "../ui/icons";
 
@@ -310,10 +311,8 @@ export function PaginaProduto({ id }: { id: string }) {
                   {desconto && <s className="font-sans text-[1.125rem] font-normal text-mute">R$ 619</s>}
                   <span className="font-sans text-[1rem] font-normal text-mute">/{unidade}</span>
                 </p>
-                <p className="mt-2 text-[0.9375rem] text-ciano-700">
-                  {painel ? "em até 6x sem juros · frete grátis" : "Atendimento e pagamento pelo WhatsApp · em até 6x"}
-                  {q > 1 && <strong className="ml-2 font-semibold text-ink">Total {brl(preco * q)}</strong>}
-                </p>
+                {q > 1 && <p className="mt-2 text-[0.9375rem] font-semibold text-ink">Total {brl(preco * q)}</p>}
+                <Pagamento className="mt-4" parcelas={painel ? "em até 6x sem juros · frete grátis" : "em até 6x"} />
 
                 {painel && (
                   <ul className="mt-5 grid grid-cols-3 gap-2 text-center text-[0.8125rem]">
@@ -342,7 +341,8 @@ export function PaginaProduto({ id }: { id: string }) {
                     rel="noopener"
                     className="flex h-14 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-4 text-[1rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
                   >
-                    {consulta ? "Consultar pelo WhatsApp" : "Comprar pelo WhatsApp"}
+                    {consulta ? "Consultar" : "Comprar"}
+                    <span className="max-sm:hidden">&nbsp;pelo WhatsApp</span>
                   </a>
                 </div>
                 <a
@@ -426,5 +426,170 @@ export function PaginaProduto({ id }: { id: string }) {
         </div>
       </section>
     </>
+  );
+}
+
+/** Linha de compra reaproveitada: preco com unidade, pagamento, quantidade e botao. */
+function Compra({ item, tamanho = "md" }: { item: Teste; tamanho?: "md" | "lg" }) {
+  const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
+  return (
+    <div>
+      <p className={`display flex flex-wrap items-baseline gap-x-3 leading-none text-ink ${tamanho === "lg" ? "text-[3rem]" : "text-[2.25rem]"}`}>
+        {brl(preco)}
+        {desconto && <s className="font-sans text-[1.0625rem] font-normal text-mute">R$ 619</s>}
+        <span className="font-sans text-[1rem] font-normal text-mute">/{unidade}</span>
+      </p>
+      {q > 1 && <p className="mt-2 text-[0.9375rem] font-semibold text-ink">Total {brl(preco * q)}</p>}
+      <Pagamento className="mt-4" parcelas={item.id === "painel" ? "em até 6x sem juros · frete grátis" : "em até 6x"} />
+      {item.id === "painel" && (
+        <ul className="mt-4 grid grid-cols-3 gap-2 text-center text-[0.8125rem]">
+          {planos.map((p, n) => {
+            const on = (n === 0 && q <= 3) || (n === 1 && q > 3 && q <= 10) || (n === 2 && q > 10);
+            return (
+              <li
+                key={p.faixa}
+                className={`rounded-xl border px-2 py-2.5 transition-colors duration-300 ${on ? "border-roxo bg-white text-ink" : "border-line text-mute"}`}
+              >
+                <span className="block">{p.faixa}</span>
+                <strong className="display mt-0.5 block text-[1.0625rem] text-ink">{p.preco}</strong>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      <div className="mt-4 flex gap-2">
+        <Quantidade q={q} setQ={setQ} nome={item.nome} grande />
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener"
+          className="flex h-14 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-4 text-[1rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
+        >
+          {consulta ? "Consultar" : "Comprar"}
+          <span className="max-sm:hidden">&nbsp;pelo WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Bloco de produto da pagina Testes: a caixa 3D de um lado e, do outro, descricao, preco,
+ * quantidade e compra. `invertido` troca os lados.
+ */
+export function BlocoProduto({ id, invertido = false, destaque = false }: { id: string; invertido?: boolean; destaque?: boolean }) {
+  const item = testes.find((t) => t.id === id)!;
+  const longo =
+    id === "painel"
+      ? "O Painel Saúde avalia 220 doenças genéticas em cães e 39 doenças e variantes em gatos, incluindo as recomendadas para a raça do seu animal."
+      : complementares.find((c) => c.id === id)!.texto;
+  return (
+    <FadeUp>
+      <article id={id} className="grid scroll-mt-28 items-stretch gap-2.5 rounded-panel bg-white p-2.5 lg:grid-cols-2">
+        <Link
+          href={`/testes/${id}`}
+          aria-label={`Ver ${item.nome}`}
+          className={`relative block min-h-[320px] overflow-hidden rounded-[20px] lg:min-h-[520px] ${invertido ? "lg:order-2" : ""}`}
+        >
+          <Caixa id={id} nome={item.nome} className="absolute inset-0" />
+          <span className="absolute top-4 left-4 flex flex-wrap gap-1.5">
+            {item.recomendado && (
+              <span className="rounded-full bg-roxo px-3 py-1.5 text-[0.75rem] font-semibold text-white">Recomendado</span>
+            )}
+            <span className="rounded-full bg-white/90 px-3 py-1.5 text-[0.75rem] font-semibold text-ink backdrop-blur">{item.especies}</span>
+          </span>
+        </Link>
+        <div className="flex flex-col gap-5 p-5 md:p-9">
+          <div>
+            {destaque && <p className="text-[0.8125rem] font-semibold tracking-[0.1em] text-roxo uppercase">Produto principal</p>}
+            <h3 className={`display mt-2 text-ink ${destaque ? "text-display" : "text-title"}`}>{item.nome}</h3>
+          </div>
+          <p className="text-mute">{longo}</p>
+          {id === "painel" && (
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {painelDestaques.map((d) => (
+                <li key={d} className="flex items-center gap-2.5 text-[0.9375rem] font-medium text-ink">
+                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-roxo text-white">
+                    <Check size={13} strokeWidth={2.6} />
+                  </span>
+                  {d}
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="mt-auto rounded-[20px] bg-paper p-5 md:p-6">
+            <Compra item={item} tamanho={destaque ? "lg" : "md"} />
+          </div>
+          <Link
+            href={`/testes/${id}`}
+            className="inline-flex min-h-9 w-fit items-center text-[0.9375rem] font-medium text-roxo underline decoration-roxo/30 underline-offset-4 hover:decoration-roxo"
+          >
+            Ver página do produto →
+          </Link>
+        </div>
+      </article>
+    </FadeUp>
+  );
+}
+
+/** As opcoes lado a lado, como comparador de loja: uma coluna por produto, com a caixa em cima. */
+export function ComparativoLoja() {
+  return (
+    <motion.div
+      className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+      initial="hidden"
+      whileInView="show"
+      viewport={viewport}
+      transition={{ staggerChildren: 0.1 }}
+    >
+      {testes.map((item) => {
+        const info = comparativo.find((c) => c.teste === item.nome)!;
+        return (
+          <motion.article
+            key={item.id}
+            className={`group flex min-w-0 flex-col rounded-card bg-white p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.16)] ${
+              item.recomendado ? "ring-2 ring-roxo" : "border border-line"
+            }`}
+            variants={{
+              hidden: { opacity: 0, y: 60 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
+            }}
+          >
+            <Link href={`/testes/${item.id}`} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.4] overflow-hidden rounded-[14px]">
+              <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
+              {item.recomendado && (
+                <span className="absolute top-3 left-3 rounded-full bg-roxo px-2.5 py-1 text-[0.6875rem] font-semibold text-white">Recomendado</span>
+              )}
+            </Link>
+            <div className="flex flex-1 flex-col p-3.5 pt-4">
+              <h3 className="display text-[1.3125rem] leading-snug text-ink">{item.nome}</h3>
+              <dl className="mt-3 flex flex-1 flex-col text-[0.875rem]">
+                {[
+                  ["O que avalia", info.avalia],
+                  ["Espécies", info.especies],
+                  ["Quem realiza", info.realiza],
+                ].map(([k, v]) => (
+                  <div key={k} className="border-t border-line py-3">
+                    <dt className="text-[0.75rem] font-semibold tracking-[0.06em] text-roxo uppercase">{k}</dt>
+                    <dd className="mt-1 text-mute">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="display mt-2 flex flex-wrap items-baseline gap-x-2 border-t border-line pt-4 text-[1.875rem] leading-none text-ink">
+                {info.preco}
+                <span className="font-sans text-[0.875rem] font-normal text-mute">/{item.id === "avulsos" ? "teste" : "kit"}</span>
+              </p>
+              <p className="mt-1.5 min-h-[1.25rem] text-[0.8125rem] text-ciano-700">{info.nota === "por teste" ? "" : info.nota}</p>
+              <Link
+                href={`/testes/${item.id}`}
+                className="mt-3 flex h-12 items-center justify-center rounded-xl bg-roxo text-[0.9375rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
+              >
+                Ver produto
+              </Link>
+            </div>
+          </motion.article>
+        );
+      })}
+    </motion.div>
   );
 }

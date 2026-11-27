@@ -76,7 +76,7 @@ indicação" e a chamada final das páginas Testes e Aprenda.
 
 | Arquivo | Origem | Onde aparece |
 |---|---|---|
-| `hero-campo.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no campo; trecho final, em que o cão chega perto da câmera; montado ida e volta, 13s, para o loop não ter corte) | Fundo do hero, tocando sozinho em loop (no Box4Vets ele é controlado pela rolagem) |
+| `hero-campo.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no campo; trecho final de 11s, em que o cão chega perto da câmera; o último segundo se funde ao primeiro, para o loop não ter corte) | Fundo do hero, tocando sozinho em loop (no Box4Vets ele é controlado pela rolagem) |
 | `faixa-canil.mp4` (+ `-mobile`, `.jpg`) | Envato (criadora com cão no canil, 7s) | Faixa com parallax da home |
 | `faixa-brincando.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no gramado, 7s) | Faixa com parallax do Programa Criador |
 | `story-brincando.mp4`, `story-canil.mp4` (+ `.jpg`) | Recortes verticais dos dois vídeos acima | Stories da Ninhada Testada (home) |
@@ -132,3 +132,7 @@ Do projeto:
 - Publicado no GitHub e no GitHub Pages.
 - "Escolha o seu teste" virou vitrine de loja e cada teste ganhou página de produto.
 - Produtos com embalagem 3D em CSS; três vídeos novos (hero, faixas e stories).
+- Hero: vídeo toca sozinho em loop com fusão entre fim e começo (ida e volta foi descartado: o cão andaria de ré).
+- Linha de pagamento virou destaque de loja (`Pagamento` em `ui/Button.tsx`), com ícones de WhatsApp e cartão.
+- Página Testes em formato de loja: comparador com as caixas, e Painel Saúde e complementares como blocos de produto com compra.
+- Página de produto só com a caixa 3D (sem fotos adicionais); preços sempre com a unidade (/kit ou /teste).
