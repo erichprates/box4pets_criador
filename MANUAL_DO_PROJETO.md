@@ -76,7 +76,7 @@ indicação" e a chamada final das páginas Testes e Aprenda.
 
 | Arquivo | Origem | Onde aparece |
 |---|---|---|
-| `hero-campo.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no campo; trecho final, 6,6s, em que o cão chega perto da câmera) | Fundo do hero, tocando sozinho em loop (no Box4Vets ele é controlado pela rolagem) |
+| `hero-campo.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no campo; trecho final, em que o cão chega perto da câmera; montado ida e volta, 13s, para o loop não ter corte) | Fundo do hero, tocando sozinho em loop (no Box4Vets ele é controlado pela rolagem) |
 | `faixa-canil.mp4` (+ `-mobile`, `.jpg`) | Envato (criadora com cão no canil, 7s) | Faixa com parallax da home |
 | `faixa-brincando.mp4` (+ `-mobile`, `.jpg`) | Storyblocks (cães no gramado, 7s) | Faixa com parallax do Programa Criador |
 | `story-brincando.mp4`, `story-canil.mp4` (+ `.jpg`) | Recortes verticais dos dois vídeos acima | Stories da Ninhada Testada (home) |
