@@ -7,7 +7,7 @@ import { SplitButton } from "@/components/ui/Button";
 import { links } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "Testes",
+  title: "Testes e preços",
   description:
     "Painel Saúde, Teste Merle, testes avulsos e Perfil de DNA: o que cada teste genético da Box4Pets avalia e como escolher.",
   alternates: { canonical: "/testes" },
@@ -25,19 +25,24 @@ export default function Page() {
         />
         <Comparativo />
         <ComoEscolher />
-        <PainelSaude />
         <Laudo />
+        <PainelSaude />
         <Coleta />
         <Complementares />
         <Fecho
-          titulo="Teste seu plantel antes da próxima ninhada."
-          texto="R$ 619 por kit. Acima de 3 kits, R$ 529 cada; acima de 10, R$ 489 cada."
+          titulo="Plantel grande ou projeto de saúde para a sua raça?"
+          texto={
+            <>
+              Fale com a nossa equipe e montamos uma proposta. Atendimento pelo WhatsApp, de segunda a sexta, das [X]
+              às [X] h. Pagamento por link, em até 6x.
+            </>
+          }
         >
-          <SplitButton href={links.pedir} variant="light">
-            Pedir pelo WhatsApp
-          </SplitButton>
-          <SplitButton href={links.plantel} variant="outline">
+          <SplitButton href={links.plantel} variant="light">
             Falar no WhatsApp
+          </SplitButton>
+          <SplitButton href={links.pedir} variant="outline">
+            Pedir pelo WhatsApp
           </SplitButton>
         </Fecho>
       </main>

@@ -28,8 +28,8 @@ export const links = {
 } as const;
 
 export const nav = [
+  { href: "/", label: "Início" },
   { href: "/testes", label: "Testes" },
-  { href: "/precos", label: "Preços" },
   { href: "/programa-criador", label: "Programa Criador" },
   { href: "/aprenda", label: "Aprenda" },
   { href: "/faq", label: "FAQ" },
@@ -594,7 +594,6 @@ export const rodape = {
         { label: "Teste Merle", href: "/testes/merle" },
         { label: "Testes avulsos", href: "/testes/avulsos" },
         { label: "Perfil de DNA", href: "/testes/perfil" },
-        { label: "Preços", href: "/precos" },
         { label: "Lista de doenças", href: links.pendente },
       ],
     },

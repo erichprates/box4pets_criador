@@ -258,8 +258,9 @@ export function PainelSaude() {
       <div className="container-page">
         <BlocoProduto id="painel" destaque />
         <FadeUp delay={0.1}>
-          <p className="mt-6 text-center text-[0.9375rem] text-mute">
-            Cria raça merle? Pergunte também pelo Teste Merle detalhado.{" "}
+          <p className="mx-auto mt-6 max-w-[820px] text-center text-[0.9375rem] text-mute">
+            Compre os kits de uma vez e use quando quiser. Vai pedir mais de 3 kits? Diga a quantidade no WhatsApp e
+            já aplicamos o desconto. Cria raça merle? Pergunte também pelo Teste Merle detalhado.{" "}
             <a href={links.pendente} className="font-semibold text-roxo underline decoration-roxo/30 underline-offset-4">
               Ver a lista completa de doenças →
             </a>

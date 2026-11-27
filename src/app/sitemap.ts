@@ -7,7 +7,9 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: site.url, priority: 1, changeFrequency: "monthly" },
-    ...nav.map((n) => ({ url: `${site.url}${n.href}`, priority: 0.8, changeFrequency: "monthly" as const })),
+    ...nav
+      .filter((n) => n.href !== "/")
+      .map((n) => ({ url: `${site.url}${n.href}`, priority: 0.8, changeFrequency: "monthly" as const })),
     ...testes.map((t) => ({ url: `${site.url}/testes/${t.id}`, priority: 0.9, changeFrequency: "monthly" as const })),
   ];
 }

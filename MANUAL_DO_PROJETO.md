@@ -1,6 +1,6 @@
 # Manual do projeto Box4Pets Criador
 
-Site da Box4Pets para criadores de cães e gatos: seis páginas, com a mesma estrutura,
+Site da Box4Pets para criadores de cães e gatos: cinco páginas e quatro páginas de produto, com a mesma estrutura,
 aparência e animações do site Box4Vets (pasta `../box4vets`). Este documento registra o
 estado do projeto, as decisões, como publicar e o que está pendente.
 
@@ -35,7 +35,6 @@ A prévia sai fora dos buscadores (`noindex`).
 | `/` | `src/app/page.tsx` | Hero com vídeo, selos, por que testar, escolha o teste, Ninhada Testada, como funciona, chamada final |
 | `/testes` | `src/app/testes/page.tsx` | Comparativo, como escolher, Painel Saúde, como é o laudo, coleta, testes complementares |
 | `/testes/[id]` | `src/app/testes/[id]/page.tsx` | Página de produto (painel, merle, avulsos, perfil), em formato de loja |
-| `/precos` | `src/app/precos/page.tsx` | Três faixas de preço, testes complementares, proposta |
 | `/programa-criador` | `src/app/programa-criador/page.tsx` | Como funciona, Ninhada Testada com certificado, benefícios, formulário |
 | `/aprenda` | `src/app/aprenda/page.tsx` | Guia de Cruzamento e Genética de Cores, em sete capítulos |
 | `/faq` | `src/app/faq/page.tsx` | Três grupos de perguntas |
@@ -138,3 +137,5 @@ Do projeto:
 - Página de produto só com a caixa 3D (sem fotos adicionais); preços sempre com a unidade (/kit ou /teste).
 - Loja: contador com número que rola e botão de compra animado (cor que sobe, seta que troca, confirmação ao clicar), no padrão do Aquamundo; "Recomendado" vira selo com estrela no topo do card, com contorno e brilho.
 - Testes: "As opções lado a lado" voltou a ser em linhas (os cards repetiam os blocos de produto), agora com a caixa em miniatura, preço e "Ver produto"; o laudo ilustrativo virou um cartão de vidro com degradê aqua, sem moldura escura.
+- Página Preços removida (ficou redundante): os preços e as faixas de desconto estão nos produtos, em Testes. O aviso sobre comprar vários kits e a chamada "Plantel grande ou projeto de saúde para a sua raça?" foram para a página Testes. Deixaram de aparecer as linhas "Economia de R$ 90 por kit (14,5%)" e "Economia de R$ 130 por kit (21%)" e a lista de seis itens do plano de 1 a 3 kits; o conteúdo continua em `planos`, em `src/content/site.ts`.
+- Testes: "Como é o laudo" passou a vir antes do bloco do Painel Saúde.
