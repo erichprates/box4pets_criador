@@ -41,9 +41,6 @@ export default function Page() {
           <SplitButton href={links.plantel} variant="light">
             Falar no WhatsApp
           </SplitButton>
-          <SplitButton href={links.pedir} variant="outline">
-            Pedir pelo WhatsApp
-          </SplitButton>
         </Fecho>
       </main>
     </>

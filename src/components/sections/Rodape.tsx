@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { rodape } from "@/content/site";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
+import { Email, Instagram, WhatsApp } from "../ui/icons";
 import { Logo } from "../ui/Logo";
 
 /**
@@ -75,8 +76,24 @@ export function Fecho({
                           <a
                             href={l.href}
                             {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
-                            className="transition-colors hover:text-roxo"
+                            aria-label={l.nome ? `${l.nome}: ${l.label}` : undefined}
+                            className="group/c inline-flex items-center gap-2.5 transition-colors hover:text-roxo"
                           >
+                            {l.icone && (
+                              <span
+                                className={`grid size-8 shrink-0 place-items-center rounded-full transition-transform duration-300 group-hover/c:scale-110 ${
+                                  l.icone === "whatsapp" ? "bg-[#25d366] text-white" : "bg-lilas text-roxo"
+                                }`}
+                              >
+                                {l.icone === "whatsapp" ? (
+                                  <WhatsApp size={17} />
+                                ) : l.icone === "instagram" ? (
+                                  <Instagram size={17} />
+                                ) : (
+                                  <Email size={17} />
+                                )}
+                              </span>
+                            )}
                             {l.label}
                           </a>
                         )}

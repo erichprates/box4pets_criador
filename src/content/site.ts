@@ -584,7 +584,14 @@ export const faqGrupos: { titulo: string; itens: Pergunta[] }[] = [
 
 /* ------------------------------------------------------------------ Rodape */
 
-export const rodape = {
+type LinkRodape = { label: string; href: string; icone?: "whatsapp" | "email" | "instagram"; nome?: string };
+
+export const rodape: {
+  frase: string;
+  colunas: { titulo: string; links: LinkRodape[] }[];
+  legal: string;
+  politicas: string[];
+} = {
   frase: "Genética de saúde para quem ama cães e gatos.",
   colunas: [
     {
@@ -608,9 +615,9 @@ export const rodape = {
     {
       titulo: "Contato",
       links: [
-        { label: "WhatsApp (12) 99211-1805", href: links.whatsapp },
-        { label: "contato@box4pets.com.br", href: links.email },
-        { label: "Instagram @box4petsdna", href: links.pendente },
+        { label: "(12) 99211-1805", href: links.whatsapp, icone: "whatsapp", nome: "WhatsApp" },
+        { label: "contato@box4pets.com.br", href: links.email, icone: "email", nome: "E-mail" },
+        { label: "@box4petsdna", href: links.pendente, icone: "instagram", nome: "Instagram" },
       ],
     },
   ],

@@ -161,3 +161,22 @@ export function WhatsApp({ size = 24, ...rest }: Props) {
     </svg>
   );
 }
+
+export function Instagram(props: Props) {
+  return (
+    <Base {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
+    </Base>
+  );
+}
+
+export function Email(props: Props) {
+  return (
+    <Base {...props}>
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <path d="m3.5 7 8.5 6.5L20.5 7" />
+    </Base>
+  );
+}
