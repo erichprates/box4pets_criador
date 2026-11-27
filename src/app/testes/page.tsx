@@ -33,8 +33,8 @@ export default function Page() {
           titulo="Plantel grande ou projeto de saúde para a sua raça?"
           texto={
             <>
-              Fale com a nossa equipe e montamos uma proposta. Atendimento pelo WhatsApp, de segunda a sexta, das [X]
-              às [X] h. Pagamento por link, em até 6x.
+              Fale com a nossa equipe e montamos uma proposta. Atendimento pelo WhatsApp, de segunda a sexta, das 9h às
+              18h. Pagamento por link, em até 6x.
             </>
           }
         >

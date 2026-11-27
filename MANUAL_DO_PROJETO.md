@@ -56,10 +56,9 @@ tabela que vira cartões, sanfona, lista) em `src/components/ui/Blocos.tsx`.
   faixas de desconto, quantidade, comprar, selos, três abas (Descrição, Como funciona,
   Informações) e "Recomendados" com os outros produtos. "Saiba mais" e o rodapé levam a ela.
 - **Ninhada Testada (home):** painel escuro com os dois vídeos em stories.
-- **Como funciona:** passos numerados, um aberto por vez, avançando sozinhos.
+- **Como funciona:** quatro passos, cada um com imagem (foto do kit, tela do app no cadastro, foto do swab, tela do laudo). As duas telas são desenhadas no site (`TelaApp` em `Home.tsx`); as duas fotos vieram do Box4Vets e são provisórias.
 - **Como escolher (Testes):** quatro perguntas em abas, com a indicação ao lado.
 - **Como é o laudo:** três status e um celular ilustrativo com a lista de condições.
-- **Preços:** três cartões, o do meio em destaque.
 - **Certificado (Programa Criador):** modelo desenhado em HTML, com os campos entre colchetes.
 - **Combinações de cruzamento (Aprenda):** a tabela virou seis botões; cada par mostra uma
   barra dividida em normais, portadores e afetados.
@@ -93,7 +92,6 @@ O protótipo ainda pede estas imagens, que continuam sem material próprio:
 | Onde | O que o protótipo pede |
 |---|---|
 | Ninhada Testada (home) | Família recebendo o filhote e o certificado impresso com QR code |
-| Como funciona | Kit aberto; app no cadastro; swab na bochecha; laudo no app |
 | Programa Criador (topo) | Matriz e padreador no canil, com o selo "Canil Testado Box4Pets" |
 | Coleta (Testes) | Vídeo de 1 min com a coleta em um cão e em um gato |
 | Cores (Aprenda) | Grade de oito cães, um por cor da tabela |
@@ -116,7 +114,6 @@ Vieram em aberto do próprio protótipo:
 - [ ] Link de **"Ativar kit"** (menu).
 - [ ] Link da **lista completa de doenças** e do **exemplo de laudo (PDF)**.
 - [ ] Endereço do **Instagram** e das páginas de **Privacidade, Reembolso e Termos**.
-- [ ] Horário de atendimento: "das [X] às [X] h" (página Preços).
 - [ ] Validade dos kits: "[X] meses" (FAQ).
 - [ ] Resposta sobre aceitação pela **CBKC e ALKC** (FAQ), hoje com o texto "[Confirmar…]".
 
@@ -140,3 +137,7 @@ Do projeto:
 - Testes: "As opções lado a lado" voltou a ser em linhas (os cards repetiam os blocos de produto), agora com a caixa em miniatura, preço e "Ver produto"; o laudo ilustrativo virou um cartão de vidro com degradê aqua, sem moldura escura.
 - Página Preços removida (ficou redundante): os preços e as faixas de desconto estão nos produtos, em Testes. O aviso sobre comprar vários kits e a chamada "Plantel grande ou projeto de saúde para a sua raça?" foram para a página Testes. Deixaram de aparecer as linhas "Economia de R$ 90 por kit (14,5%)" e "Economia de R$ 130 por kit (21%)" e a lista de seis itens do plano de 1 a 3 kits; o conteúdo continua em `planos`, em `src/content/site.ts`.
 - Testes: "Como é o laudo" passou a vir antes do bloco do Painel Saúde.
+- Menu ganhou "Início"; rodapé com ícones de WhatsApp, e-mail e Instagram no lugar das palavras.
+- Hero: botões "Adquira o teste" (rola até a vitrine, não abre o WhatsApp), "Conhecer os testes" e "Conhecer o Programa Criador"; linha de pagamento "Pague em até 6x".
+- Testes: ordem final é como escolher, laudo, Painel Saúde, coleta, comparativo e complementares; os complementares viraram cartões menores com "Ver produto" (sem compra ali). Atendimento das 9h às 18h.
+- Home: "Como funciona" com imagem em cada passo, como no protótipo.

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import {
   coleta,
@@ -19,6 +20,7 @@ import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
 import { Lista, Tabela, Titulo } from "../ui/Blocos";
 import { Rich, SplitButton } from "../ui/Button";
+import { Caixa } from "../ui/Caixa";
 import { BlocoProduto, ComparativoLinhas } from "./Loja";
 
 /** Como escolher: quatro perguntas a esquerda, a resposta grande a direita. */
@@ -277,11 +279,52 @@ export function Complementares() {
     <section className="panel bg-paper py-24 md:py-32">
       <div className="container-page">
         <Titulo titulo="Testes complementares" className="mb-12 md:mb-16" />
-        <div className="flex flex-col gap-5">
-          {complementares.map((c, i) => (
-            <BlocoProduto key={c.id} id={c.id} invertido={i % 2 === 0} />
+        {/* Cartoes compactos: aqui nao se compra, cada um leva para a pagina do produto. */}
+        <motion.ul
+          className="grid gap-5 md:grid-cols-3"
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          transition={{ staggerChildren: 0.1 }}
+        >
+          {complementares.map((c) => (
+            <motion.li
+              key={c.id}
+              className="group flex flex-col rounded-card border border-line bg-white p-3 transition-shadow duration-500 hover:shadow-[0_24px_50px_rgb(63_47_128/0.14)]"
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: ease.out } },
+              }}
+            >
+              <Link
+                href={`/testes/${c.id}`}
+                aria-label={`Ver ${c.nome}`}
+                className="relative block aspect-[4/3] overflow-hidden rounded-xl"
+              >
+                <Caixa
+                  id={c.id}
+                  nome={c.nome}
+                  className="pointer-events-none absolute inset-0 transition-transform duration-700 ease-out-expo group-hover:scale-105"
+                />
+              </Link>
+              <div className="flex flex-1 flex-col px-3 pt-5 pb-3">
+                <h3 className="display text-[1.375rem] leading-snug text-ink">{c.nome}</h3>
+                <p className="mt-2 line-clamp-3 text-[0.9375rem] text-mute">{c.texto}</p>
+                <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                  <p className="display text-[1.375rem] leading-none text-ink">{c.preco.replace(" por teste", "")}</p>
+                  <Link
+                    href={`/testes/${c.id}`}
+                    className="group/ver relative flex h-11 items-center gap-2 overflow-hidden rounded-xl bg-roxo px-4 text-[0.9375rem] font-medium text-white"
+                  >
+                    <span aria-hidden className="absolute inset-0 translate-y-[101%] bg-ink transition-transform duration-500 ease-out-expo group-hover/ver:translate-y-0" />
+                    <span className="relative">Ver produto</span>
+                    <span aria-hidden className="relative transition-transform duration-300 group-hover/ver:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </div>
+            </motion.li>
           ))}
-        </div>
+        </motion.ul>
       </div>
     </section>
   );

@@ -3,7 +3,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { links, ninhadaHome, porque, selos, testes } from "@/content/site";
+import { links, ninhadaHome, passos, porque, selos, testes } from "@/content/site";
 import { asset } from "@/lib/base";
 import { ease, viewport } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -222,6 +222,126 @@ export function NinhadaHome() {
           <Story nome="story-brincando" alt="Dois cães brincando no gramado" distance={30} className="w-[44%] max-w-[230px] lg:mt-16" />
           <Story nome="story-canil" alt="Criadora fazendo carinho em um cão no canil" distance={-30} className="w-[44%] max-w-[230px] lg:mb-16" />
         </div>
+      </div>
+    </section>
+  );
+}
+
+/** Tela do app desenhada no site (o protótipo pede "TELA", nao foto). */
+function TelaApp({ tipo }: { tipo: "cadastro" | "laudo" }) {
+  return (
+    <div className="grad-soft absolute inset-0 grid place-items-center overflow-hidden">
+      <span aria-hidden className="absolute aspect-square w-[90%] rounded-full border border-white/80" />
+      <div className="relative w-[56%] rounded-[18px] bg-gradient-to-br from-ciano-200 via-white to-roxo-400 p-[1.5px] shadow-[0_20px_44px_rgb(63_47_128/0.25)] transition-transform duration-700 ease-out-expo group-hover:-translate-y-1.5">
+        <div className="overflow-hidden rounded-[16.5px] bg-white/85 backdrop-blur">
+          <div className="bg-gradient-to-br from-roxo via-roxo-400 to-ciano px-3.5 py-3 text-white">
+            <p className="text-[0.5rem] tracking-[0.14em] text-white/80 uppercase">Box4Pets</p>
+            <p className="display text-[0.8125rem] leading-tight">{tipo === "cadastro" ? "Cadastro do animal" : "Laudo"}</p>
+          </div>
+          {tipo === "cadastro" ? (
+            <div className="flex flex-col gap-1.5 p-3">
+              {["Nome", "Espécie", "Código do kit"].map((c, n) => (
+                <div key={c}>
+                  <p className="text-[0.5rem] font-semibold text-mute">{c}</p>
+                  <span className="mt-1 flex h-5 items-center rounded-md border border-line bg-paper px-1.5">
+                    <span className="h-1.5 rounded-full bg-ink/20" style={{ width: `${[55, 30, 45, 65][n]}%` }} />
+                  </span>
+                </div>
+              ))}
+              <span className="mt-1 grid h-6 place-items-center rounded-md bg-roxo text-[0.5625rem] font-semibold text-white">
+                Ativar kit
+              </span>
+            </div>
+          ) : (
+            <ul className="flex flex-col px-3.5 py-2">
+              {(["Normal", "Portador", "Normal", "Normal"] as const).map((st, n) => (
+                <li key={n} className="flex items-center justify-between gap-2 border-b border-line py-2 last:border-0">
+                  <span className="h-1.5 rounded-full bg-ink/20" style={{ width: `${[52, 40, 58, 34, 46][n]}%` }} />
+                  <span
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-[0.5rem] font-semibold ${
+                      st === "Normal" ? "bg-[#dff5e8] text-[#0f6b3a]" : "bg-[#fdf0d2] text-[#8a5a00]"
+                    }`}
+                  >
+                    {st}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Imagem de cada passo, na ordem do protótipo: foto, tela, foto, tela. */
+const midiaPassos: ({ foto: string; alt: string } | { tela: "cadastro" | "laudo"; alt: string })[] = [
+  { foto: "/media/kit.jpg", alt: "Kit aberto, com a caixa, os swabs e o envelope" },
+  { tela: "cadastro", alt: "Tela do app Box4Pets no cadastro do animal" },
+  { foto: "/media/coleta.jpg", alt: "Mão passando o swab na bochecha de um cão" },
+  { tela: "laudo", alt: "Tela do app com o laudo, mostrando os status Normal e Portador" },
+];
+
+/** Como funciona: quatro passos, cada um com sua imagem, ligados por uma linha que se desenha. */
+export function ComoFunciona() {
+  const ref = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "start 0.3"] });
+  return (
+    <section className="py-24 md:py-36">
+      <div className="container-page">
+        <Titulo tag="Passo a passo" titulo="Como funciona" className="mb-14 md:mb-20" />
+        <motion.ol
+          ref={ref}
+          className="relative grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          transition={{ staggerChildren: 0.14 }}
+        >
+          {passos.map((p, n) => {
+            const m = midiaPassos[n];
+            return (
+              <motion.li
+                key={p.titulo}
+                className="group flex flex-col"
+                variants={{
+                  hidden: { opacity: 0, y: 60 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
+                }}
+              >
+                <div role="img" aria-label={m.alt} className="relative aspect-[4/3.3] overflow-hidden rounded-card bg-paper">
+                  {"foto" in m ? (
+                    <Image
+                      src={m.foto}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 280px, (min-width: 640px) 46vw, 92vw"
+                      className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-110"
+                    />
+                  ) : (
+                    <TelaApp tipo={m.tela} />
+                  )}
+                </div>
+                <div className="mt-5 flex items-center gap-3">
+                  <span className="display grid size-11 shrink-0 place-items-center rounded-full bg-roxo text-[1rem] text-white transition-transform duration-500 ease-out-expo group-hover:scale-110">
+                    {n + 1}
+                  </span>
+                  {/* Linha ate o proximo passo (so no desktop). */}
+                  {n < passos.length - 1 && (
+                    <span className="hidden h-px flex-1 overflow-hidden bg-line lg:block">
+                      <motion.span
+                        className="block h-full origin-left bg-roxo"
+                        style={{ scaleX: useTransform(scrollYProgress, [n * 0.25, n * 0.25 + 0.35], [0, 1]) }}
+                      />
+                    </span>
+                  )}
+                </div>
+                <h3 className="display mt-4 text-[1.3125rem] leading-snug text-ink">{p.titulo}</h3>
+                <p className="mt-2 text-[0.9375rem] text-mute">{p.texto}</p>
+              </motion.li>
+            );
+          })}
+        </motion.ol>
       </div>
     </section>
   );

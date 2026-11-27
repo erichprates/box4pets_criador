@@ -2,12 +2,10 @@ import { JsonLd } from "@/components/JsonLd";
 import { FaixaVideo } from "@/components/sections/FaixaVideo";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
-import { Escolha, NinhadaHome, PorQue, Selos } from "@/components/sections/Home";
-import { Passos } from "@/components/sections/Passos";
+import { ComoFunciona, Escolha, NinhadaHome, PorQue, Selos } from "@/components/sections/Home";
 import { Fecho } from "@/components/sections/Rodape";
-import { Titulo } from "@/components/ui/Blocos";
 import { SplitButton } from "@/components/ui/Button";
-import { links, passos, site } from "@/content/site";
+import { links, site } from "@/content/site";
 
 export default function Home() {
   return (
@@ -42,12 +40,7 @@ export default function Home() {
         <PorQue />
         <Escolha />
         <NinhadaHome />
-        <section className="py-24 md:py-36">
-          <div className="container-page">
-            <Titulo tag="Passo a passo" titulo="Como funciona" className="mb-14 md:mb-20" />
-            <Passos itens={passos} />
-          </div>
-        </section>
+        <ComoFunciona />
         <FaixaVideo
           rotulo="Criadora com um cão no canil"
           linhas={["Teste seu plantel", "antes da próxima ninhada."]}

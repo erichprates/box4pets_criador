@@ -105,11 +105,11 @@ export function Rich({ text, strong = "font-semibold text-ink" }: { text: string
 
 /**
  * Destaque de atendimento e pagamento, como em loja: selo do WhatsApp + selo do cartao.
- * `parcelas` troca o texto do cartao (ex: "pague em até 6x sem juros · frete grátis").
+ * `parcelas` troca o texto do cartao (ex: "Pague em até 6x sem juros · frete grátis").
  */
 export function Pagamento({
   escuro = false,
-  parcelas = "pague em até 6x",
+  parcelas = "Pague em até 6x",
   className = "",
 }: {
   escuro?: boolean;
