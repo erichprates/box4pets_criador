@@ -1,8 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { links, testes } from "@/content/site";
 import { brl, noCarrinho, precoDe, unitario, useCarrinho } from "@/lib/carrinho";
 import { ease } from "@/lib/motion";
@@ -61,6 +61,50 @@ function mensagem(itens: Record<string, number>, total: number) {
   return `Olá! Vim pelo site e quero fazer este pedido:\n${linhas.join("\n")}\nTotal: ${brl(total)}`;
 }
 
+/** Botao flutuante do carrinho: icone, quantidade e total. `de` e de onde ele entra (px, eixo y). */
+function Flutuante({
+  unidades,
+  total,
+  abrir,
+  de,
+  className,
+}: {
+  unidades: number;
+  total: number;
+  abrir: () => void;
+  de: number;
+  className: string;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={abrir}
+      aria-label={`Abrir carrinho, ${unidades} ${unidades > 1 ? "itens" : "item"}, total ${brl(total)}`}
+      className={`fixed z-40 flex h-14 cursor-pointer items-center gap-3 rounded-full bg-roxo pr-5 pl-2 text-white shadow-[0_16px_40px_rgb(63_47_128/0.45)] ${className}`}
+      initial={{ y: de, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: de, opacity: 0 }}
+      transition={{ type: "spring", stiffness: 320, damping: 26 }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <span className="relative grid size-10 place-items-center rounded-full bg-white text-roxo">
+        <IconeCarrinho className="size-5" />
+        <motion.span
+          key={unidades}
+          className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-ciano px-1 text-[0.6875rem] font-semibold text-white tabular-nums"
+          initial={{ scale: 0.4 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 500, damping: 18 }}
+        >
+          {unidades}
+        </motion.span>
+      </span>
+      <span className="display text-[1rem] tabular-nums">{brl(total)}</span>
+    </motion.button>
+  );
+}
+
 /** Cada parte do carrinho (cabecalho, itens, rodape) entra em sequencia. */
 const parte = {
   fechado: { opacity: 0, y: 14 },
@@ -70,6 +114,10 @@ const parte = {
 /** Carrinho em janela flutuante: itens, quantidades, desconto por quantidade e fechamento pelo WhatsApp. */
 export function Carrinho() {
   const { itens, unidades, total, economia, aberto, abrir, fechar, definir, remover } = useCarrinho();
+  // Mesma regra do Header: o menu some ao rolar para baixo depois de 500px.
+  const { scrollY } = useScroll();
+  const [menuOculto, setMenuOculto] = useState(false);
+  useMotionValueEvent(scrollY, "change", (y) => setMenuOculto(y > 500 && y > (scrollY.getPrevious() ?? 0)));
   const ids = noCarrinho.filter((id) => itens[id]);
   const painel = itens.painel ?? 0;
   // Proxima faixa de desconto do Painel Saude.
@@ -88,34 +136,14 @@ export function Carrinho() {
 
   return (
     <>
-    {/* No celular, com itens no carrinho, um botao fica flutuando no canto da tela (o menu some ao rolar). */}
+    {/* Com itens no carrinho, um botao fica flutuando: no celular, no canto de baixo; no desktop,
+        no topo, quando o menu some ao rolar para baixo. */}
     <AnimatePresence>
       {unidades > 0 && !aberto && (
-        <motion.button
-          type="button"
-          onClick={abrir}
-          aria-label={`Abrir carrinho, ${unidades} ${unidades > 1 ? "itens" : "item"}, total ${brl(total)}`}
-          className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex h-14 cursor-pointer items-center gap-3 rounded-full bg-roxo pr-5 pl-2 text-white shadow-[0_16px_40px_rgb(63_47_128/0.45)] lg:hidden"
-          initial={{ y: 90, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 90, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 320, damping: 26 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <span className="relative grid size-10 place-items-center rounded-full bg-white text-roxo">
-            <IconeCarrinho className="size-5" />
-            <motion.span
-              key={unidades}
-              className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-ciano px-1 text-[0.6875rem] font-semibold text-white tabular-nums"
-              initial={{ scale: 0.4 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 500, damping: 18 }}
-            >
-              {unidades}
-            </motion.span>
-          </span>
-          <span className="display text-[1rem] tabular-nums">{brl(total)}</span>
-        </motion.button>
+        <Flutuante key="celular" unidades={unidades} total={total} abrir={abrir} de={90} className="right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] lg:hidden" />
+      )}
+      {unidades > 0 && !aberto && menuOculto && (
+        <Flutuante key="desktop" unidades={unidades} total={total} abrir={abrir} de={-90} className="top-4 right-[max(1.5rem,calc((100vw-1160px)/2))] max-lg:hidden" />
       )}
     </AnimatePresence>
     <AnimatePresence>
