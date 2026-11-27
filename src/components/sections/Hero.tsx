@@ -129,15 +129,15 @@ export function Hero() {
               <SplitButton href={links.pedir} variant="light" className="max-md:w-full max-md:justify-between">
                 Comprar o teste por R$ 619
               </SplitButton>
-              <SplitButton href={links.contato} variant="outline" className="max-md:hidden">
-                Entre em contato
+              <SplitButton href="/testes/painel" variant="outline" external={false} className="max-md:hidden">
+                Ver o que o painel avalia
               </SplitButton>
               <Link
-                href="/testes"
+                href="/programa-criador"
                 className="group inline-flex h-13 items-center gap-2 px-3 text-[0.9375rem] font-medium text-white max-md:hidden"
               >
                 <span className="border-b border-white/40 pb-0.5 transition-colors group-hover:border-white">
-                  Ver o que o painel avalia
+                  Conhecer o Programa Criador
                 </span>
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
@@ -224,14 +224,14 @@ export function Hero() {
             </FadeUp>
             <FadeUp delay={0.15} className="md:hidden">
               <div className="flex flex-col gap-3">
-                <SplitButton href={links.contato} variant="outline" className="w-full justify-between">
-                  Entre em contato
+                <SplitButton href="/testes/painel" variant="outline" external={false} className="w-full justify-between">
+                  Ver o que o painel avalia
                 </SplitButton>
                 <Link
-                  href="/testes"
+                  href="/programa-criador"
                   className="flex h-13 items-center justify-between rounded-xl bg-white/10 pr-4 pl-5 text-[0.9375rem] font-medium text-white"
                 >
-                  Ver o que o painel avalia
+                  Conhecer o Programa Criador
                   <ArrowRight size={18} />
                 </Link>
               </div>
