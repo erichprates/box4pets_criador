@@ -660,60 +660,97 @@ export function BlocoProduto({ id, invertido = false, destaque = false }: { id: 
   );
 }
 
-/** As opcoes lado a lado, como comparador de loja: uma coluna por produto, com a caixa em cima. */
-export function ComparativoLoja() {
+/**
+ * As opcoes lado a lado, em linhas: uma por produto, com a caixa em miniatura, o que avalia,
+ * especies, quem realiza, preco e o atalho para o produto. No celular cada linha vira um cartao.
+ */
+export function ComparativoLinhas() {
+  const colunas = "lg:grid-cols-[76px_1fr_2fr_0.8fr_1.1fr_0.9fr_auto]";
+  const rotulo = "text-[0.6875rem] font-semibold tracking-[0.08em] text-roxo uppercase lg:hidden";
   return (
-    <motion.div
-      className="grid gap-x-5 gap-y-8 pt-6 sm:grid-cols-2 lg:grid-cols-4"
-      initial="hidden"
-      whileInView="show"
-      viewport={viewport}
-      transition={{ staggerChildren: 0.1 }}
-    >
-      {testes.map((item) => {
-        const info = comparativo.find((c) => c.teste === item.nome)!;
-        return (
-          <motion.article
-            key={item.id}
-            className={`group flex min-w-0 flex-col rounded-card p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.2)] ${cartao(item.recomendado)}`}
-            variants={{
-              hidden: { opacity: 0, y: 60 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
-            }}
-          >
-            {item.recomendado && <SeloRecomendado />}
-            <Link href={`/testes/${item.id}`} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.4] overflow-hidden rounded-[14px]">
-              <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
-            </Link>
-            <div className="flex flex-1 flex-col p-3.5 pt-4">
-              <h3 className="display text-[1.3125rem] leading-snug text-ink">{item.nome}</h3>
-              <dl className="mt-3 flex flex-1 flex-col text-[0.875rem]">
-                {[
-                  ["O que avalia", info.avalia],
-                  ["Espécies", info.especies],
-                  ["Quem realiza", info.realiza],
-                ].map(([k, v]) => (
-                  <div key={k} className="border-t border-line py-3">
-                    <dt className="text-[0.75rem] font-semibold tracking-[0.06em] text-roxo uppercase">{k}</dt>
-                    <dd className="mt-1 text-mute">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="display mt-2 flex flex-wrap items-baseline gap-x-2 border-t border-line pt-4 text-[1.875rem] leading-none text-ink">
-                {info.preco}
-                <span className="font-sans text-[0.875rem] font-normal text-mute">/{item.id === "avulsos" ? "teste" : "kit"}</span>
-              </p>
-              <p className="mt-1.5 min-h-[1.25rem] text-[0.8125rem] text-ciano-700">{info.nota === "por teste" ? "" : info.nota}</p>
+    <div className="flex flex-col gap-3">
+      <div className={`hidden items-center gap-5 px-3 text-[0.75rem] font-semibold tracking-[0.08em] text-mute uppercase lg:grid ${colunas}`}>
+        <span />
+        <span>Teste</span>
+        <span>O que avalia</span>
+        <span>Espécies</span>
+        <span>Quem realiza</span>
+        <span>Preço</span>
+        <span className="w-[124px]" />
+      </div>
+      <motion.ul
+        className="flex flex-col gap-3"
+        initial="hidden"
+        whileInView="show"
+        viewport={viewport}
+        transition={{ staggerChildren: 0.09 }}
+      >
+        {testes.map((item) => {
+          const info = comparativo.find((c) => c.teste === item.nome)!;
+          const rec = !!item.recomendado;
+          return (
+            <motion.li
+              key={item.id}
+              className={`group grid items-center gap-x-5 gap-y-3 rounded-card p-3 transition-shadow duration-500 hover:shadow-[0_24px_50px_rgb(63_47_128/0.14)] max-lg:grid-cols-[76px_1fr] ${colunas} ${
+                rec ? "bg-gradient-to-r from-lilas to-white ring-2 ring-roxo" : "border border-line bg-white"
+              }`}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: ease.out } },
+              }}
+            >
               <Link
                 href={`/testes/${item.id}`}
-                className="mt-3 flex h-12 items-center justify-center rounded-xl bg-roxo text-[0.9375rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
+                aria-label={`Ver ${item.nome}`}
+                className="relative block aspect-square w-[76px] overflow-hidden rounded-xl transition-transform duration-500 ease-out-expo group-hover:scale-105"
               >
-                Ver produto
+                <Caixa id={item.id} nome={item.nome} className="pointer-events-none absolute inset-0" />
               </Link>
-            </div>
-          </motion.article>
-        );
-      })}
-    </motion.div>
+              <div>
+                <p className="display text-[1.1875rem] leading-snug text-ink">{item.nome}</p>
+                {rec && (
+                  <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-roxo py-0.5 pr-2.5 pl-2 text-[0.6875rem] font-semibold text-white">
+                    <svg viewBox="0 0 20 20" className="size-3 text-ciano-200" fill="currentColor" aria-hidden>
+                      <path d="m10 1.8 2.5 5.2 5.7.8-4.1 4 1 5.7L10 14.8l-5.1 2.7 1-5.7-4.1-4 5.7-.8L10 1.8Z" />
+                    </svg>
+                    Recomendado
+                  </span>
+                )}
+              </div>
+              <div className="max-lg:col-span-2">
+                <p className={rotulo}>O que avalia</p>
+                <p className="text-[0.9375rem] text-mute">{info.avalia}</p>
+              </div>
+              <div>
+                <p className={rotulo}>Espécies</p>
+                <p className="text-[0.9375rem] text-ink">{info.especies}</p>
+              </div>
+              <div>
+                <p className={rotulo}>Quem realiza</p>
+                <p className="text-[0.9375rem] text-ink">{info.realiza}</p>
+              </div>
+              <div className="max-lg:col-span-2 max-lg:border-t max-lg:border-line max-lg:pt-3">
+                <p className="display flex flex-wrap items-baseline gap-x-1.5 text-[1.5rem] leading-none text-ink">
+                  {info.preco}
+                  <span className="font-sans text-[0.8125rem] font-normal text-mute">/{item.id === "avulsos" ? "teste" : "kit"}</span>
+                </p>
+                {info.nota && info.nota !== "por teste" && <p className="mt-1 text-[0.75rem] text-ciano-700">{info.nota}</p>}
+              </div>
+              <Link
+                href={`/testes/${item.id}`}
+                className="group/ver relative flex h-12 w-[124px] items-center justify-center gap-2 overflow-hidden rounded-xl bg-roxo text-[0.9375rem] font-medium text-white max-lg:col-span-2 max-lg:w-full"
+              >
+                <span aria-hidden className="absolute inset-0 translate-y-[101%] bg-ink transition-transform duration-500 ease-out-expo group-hover/ver:translate-y-0" />
+                <span className="relative">Ver produto</span>
+                <span className="relative block size-4 overflow-hidden">
+                  <Seta className="absolute inset-0 transition-transform duration-500 ease-out-expo group-hover/ver:translate-x-[110%]" />
+                  <Seta className="absolute inset-0 -translate-x-[110%] transition-transform duration-500 ease-out-expo group-hover/ver:translate-x-0" />
+                </span>
+              </Link>
+            </motion.li>
+          );
+        })}
+      </motion.ul>
+    </div>
   );
 }

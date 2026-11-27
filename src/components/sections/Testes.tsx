@@ -19,7 +19,7 @@ import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
 import { Lista, Tabela, Titulo } from "../ui/Blocos";
 import { Rich, SplitButton } from "../ui/Button";
-import { BlocoProduto, ComparativoLoja } from "./Loja";
+import { BlocoProduto, ComparativoLinhas } from "./Loja";
 
 /** Como escolher: quatro perguntas a esquerda, a resposta grande a direita. */
 export function ComoEscolher() {
@@ -143,16 +143,22 @@ export function Laudo() {
         <FadeUp delay={0.15}>
           <div
             role="img"
-            aria-label="Celular mostrando o laudo de um cão: lista de condições com os selos Livre, Portador e Em risco"
-            className="mx-auto w-full max-w-[330px] rounded-[44px] bg-ink p-3 shadow-[0_40px_90px_rgb(27_18_61/0.35)]"
+            aria-label="Tela do app mostrando o laudo de um cão: lista de condições com os selos Livre, Portador e Em risco"
+            className="relative mx-auto w-full max-w-[360px]"
           >
-            <div className="overflow-hidden rounded-[34px] bg-white">
-              <div className="bg-roxo px-5 pt-8 pb-5 text-white">
-                <p className="text-[0.6875rem] tracking-[0.14em] text-ciano-200 uppercase">Painel Saúde</p>
-                <p className="display mt-1 text-[1.25rem]">Laudo do animal</p>
+            {/* Brilho aqua atras e um segundo vidro inclinado, para dar profundidade. */}
+            <span aria-hidden className="absolute -inset-10 bg-[radial-gradient(closest-side,rgb(96_199_207/0.45),transparent)]" />
+            <span aria-hidden className="absolute inset-0 translate-x-5 translate-y-4 rotate-6 rounded-[32px] border border-white bg-white/35 backdrop-blur" />
+            {/* Vidro com contorno em degrade (aqua para roxo), sem moldura escura. */}
+            <div className="relative rounded-[32px] bg-gradient-to-br from-ciano-200 via-white to-roxo-400 p-[1.5px] shadow-[0_40px_90px_rgb(63_47_128/0.28)]">
+            <div className="overflow-hidden rounded-[30.5px] bg-white/80 backdrop-blur-xl">
+              <div className="relative overflow-hidden bg-gradient-to-br from-roxo via-roxo-400 to-ciano px-6 pt-7 pb-6 text-white">
+                <span aria-hidden className="absolute -top-16 -right-10 size-44 rounded-full bg-white/15" />
+                <p className="relative text-[0.6875rem] tracking-[0.14em] text-white/80 uppercase">Painel Saúde</p>
+                <p className="display relative mt-1 text-[1.375rem]">Laudo do animal</p>
               </div>
               <motion.ul
-                className="flex flex-col px-4 py-3"
+                className="flex flex-col px-5 py-3"
                 initial="hidden"
                 whileInView="show"
                 viewport={viewport}
@@ -174,6 +180,7 @@ export function Laudo() {
                   </motion.li>
                 ))}
               </motion.ul>
+            </div>
             </div>
           </div>
         </FadeUp>
@@ -232,13 +239,13 @@ export function Coleta() {
   );
 }
 
-/** As opcoes lado a lado, em formato de comparador de loja. */
+/** As opcoes lado a lado, em linhas. */
 export function Comparativo() {
   return (
     <section className="py-24 md:py-32">
       <div className="container-page">
         <Titulo titulo="As opções lado a lado" className="mb-10" />
-        <ComparativoLoja />
+        <ComparativoLinhas />
       </div>
     </section>
   );

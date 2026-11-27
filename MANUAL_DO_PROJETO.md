@@ -137,3 +137,4 @@ Do projeto:
 - Página Testes em formato de loja: comparador com as caixas, e Painel Saúde e complementares como blocos de produto com compra.
 - Página de produto só com a caixa 3D (sem fotos adicionais); preços sempre com a unidade (/kit ou /teste).
 - Loja: contador com número que rola e botão de compra animado (cor que sobe, seta que troca, confirmação ao clicar), no padrão do Aquamundo; "Recomendado" vira selo com estrela no topo do card, com contorno e brilho.
+- Testes: "As opções lado a lado" voltou a ser em linhas (os cards repetiam os blocos de produto), agora com a caixa em miniatura, preço e "Ver produto"; o laudo ilustrativo virou um cartão de vidro com degradê aqua, sem moldura escura.
