@@ -161,3 +161,4 @@ Do projeto:
 - Carrinho no celular: com itens, um botão flutuante (ícone, quantidade e total) fica no canto inferior direito e abre a gaveta.
 - Home: a faixa de vídeo ficou sem a linha de preços.
 - Faixa de vídeo: logo acima da frase (nas duas faixas, home e Programa Criador); no celular o vídeo da home foi deslocado para o cão aparecer (`focoMobile="24%"` em `FaixaVideo`).
+- Carrinho: deixou de ser uma gaveta de altura inteira. É uma janela com a altura do conteúdo (cresce com os itens e só rola por dentro ao encher a tela); no desktop abre do canto do ícone, no celular sobe de baixo. Entrada com mola, escala e desfoque, e as partes aparecem em sequência.

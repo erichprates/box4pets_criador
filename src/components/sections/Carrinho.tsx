@@ -61,7 +61,13 @@ function mensagem(itens: Record<string, number>, total: number) {
   return `Olá! Vim pelo site e quero fazer este pedido:\n${linhas.join("\n")}\nTotal: ${brl(total)}`;
 }
 
-/** Gaveta do carrinho: itens, quantidades, desconto por quantidade e fechamento pelo WhatsApp. */
+/** Cada parte do carrinho (cabecalho, itens, rodape) entra em sequencia. */
+const parte = {
+  fechado: { opacity: 0, y: 14 },
+  aberto: { opacity: 1, y: 0, transition: { duration: 0.45, ease: ease.out } },
+};
+
+/** Carrinho em janela flutuante: itens, quantidades, desconto por quantidade e fechamento pelo WhatsApp. */
 export function Carrinho() {
   const { itens, unidades, total, economia, aberto, abrir, fechar, definir, remover } = useCarrinho();
   const ids = noCarrinho.filter((id) => itens[id]);
@@ -127,13 +133,24 @@ export function Carrinho() {
           />
           <motion.aside
             data-lenis-prevent
-            className="absolute inset-y-2 right-2 flex w-[calc(100%-1rem)] max-w-[440px] flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_30px_80px_rgb(27_18_61/0.35)]"
-            initial={{ x: "105%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "105%" }}
-            transition={{ duration: 0.6, ease: ease.out }}
+            // Altura conforme o conteudo: cresce com os itens ate o limite da tela, e so entao rola por dentro.
+            // No desktop abre do canto do icone do carrinho; no celular sobe de baixo, como uma folha.
+            className="absolute right-2 flex max-h-[calc(100%-1rem)] w-[calc(100%-1rem)] max-w-[440px] origin-bottom flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_30px_80px_rgb(27_18_61/0.35)] max-lg:bottom-2 max-lg:left-2 max-lg:mx-auto lg:top-2 lg:origin-top-right"
+            variants={{
+              fechado: { opacity: 0, scale: 0.9, y: 28, filter: "blur(10px)", transition: { duration: 0.28, ease: ease.inOut } },
+              aberto: {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                filter: "blur(0px)",
+                transition: { type: "spring", stiffness: 300, damping: 28, staggerChildren: 0.06, delayChildren: 0.08 },
+              },
+            }}
+            initial="fechado"
+            animate="aberto"
+            exit="fechado"
           >
-            <header className="flex items-center justify-between px-6 pt-6 pb-4">
+            <motion.header variants={parte} className="flex items-center justify-between px-6 pt-6 pb-4">
               <h2 className="display text-[1.5rem] text-ink">
                 Carrinho
                 {unidades > 0 && <span className="ml-2 font-sans text-[0.9375rem] font-normal text-mute">{unidades} {unidades > 1 ? "itens" : "item"}</span>}
@@ -146,10 +163,10 @@ export function Carrinho() {
               >
                 <Close size={18} />
               </button>
-            </header>
+            </motion.header>
 
             {ids.length === 0 ? (
-              <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
+              <motion.div variants={parte} className="flex flex-col items-center gap-4 px-8 pt-4 pb-10 text-center">
                 <span className="grid size-16 place-items-center rounded-full bg-lilas text-roxo">
                   <IconeCarrinho className="size-7" />
                 </span>
@@ -162,10 +179,10 @@ export function Carrinho() {
                 >
                   Ver os testes
                 </Link>
-              </div>
+              </motion.div>
             ) : (
               <>
-                <div className="flex-1 overflow-y-auto px-6">
+                <motion.div variants={parte} className="min-h-0 flex-1 overflow-y-auto px-6">
                   {/* Quanto falta para a proxima faixa de desconto do Painel Saude. */}
                   {painel > 0 && (
                     <div className="mb-4 rounded-2xl bg-paper p-4">
@@ -206,7 +223,7 @@ export function Carrinho() {
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.4, ease: ease.out }}
                           >
-                            <div className="flex gap-4 border-b border-line py-4">
+                            <div className="flex gap-4 border-b border-line py-4 last:border-0">
                               <Link href={`/testes/${id}`} onClick={fechar} aria-label={`Ver ${item.nome}`} className="relative block size-20 shrink-0 overflow-hidden rounded-2xl">
                                 <Caixa id={id} nome={item.nome} className="pointer-events-none absolute inset-0" />
                               </Link>
@@ -236,9 +253,9 @@ export function Carrinho() {
                       })}
                     </AnimatePresence>
                   </ul>
-                </div>
+                </motion.div>
 
-                <footer className="border-t border-line px-6 pt-4 pb-6">
+                <motion.footer variants={parte} className="border-t border-line px-6 pt-4 pb-6">
                   {economia > 0 && (
                     <p className="flex justify-between text-[0.875rem] text-ciano-700">
                       <span>Desconto por quantidade</span>
@@ -260,7 +277,7 @@ export function Carrinho() {
                     <WhatsApp size={20} className="relative" />
                     <span className="relative">Finalizar pelo WhatsApp</span>
                   </a>
-                </footer>
+                </motion.footer>
               </>
             )}
           </motion.aside>
