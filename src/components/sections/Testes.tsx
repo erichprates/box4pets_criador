@@ -12,6 +12,7 @@ import {
   links,
   painelDestaques,
   statusLaudo,
+  testes,
 } from "@/content/site";
 import { asset } from "@/lib/base";
 import { ease, viewport } from "@/lib/motion";
@@ -63,20 +64,39 @@ export function ComoEscolher() {
             })}
           </div>
           {/* As quatro respostas ocupam a mesma celula: altura fixa e tudo no HTML. */}
-          <div role="tabpanel" className="grid rounded-panel border border-white/12 bg-white/[0.06] p-7 md:p-11">
+          <div role="tabpanel" className="grid rounded-panel border border-white/12 bg-white/[0.06] p-7 md:py-6 md:pr-6 md:pl-11">
             {comoEscolher.map((item, n) => {
               const on = n === i;
               return (
                 <motion.div
                   key={item.q}
                   aria-hidden={!on}
-                  className={`col-start-1 row-start-1 flex flex-col justify-center ${on ? "" : "pointer-events-none invisible"}`}
+                  className={`col-start-1 row-start-1 flex items-center gap-6 max-sm:flex-col-reverse max-sm:items-start ${on ? "" : "pointer-events-none invisible"}`}
                   initial={false}
                   animate={on ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 16, filter: "blur(6px)" }}
                   transition={{ duration: on ? 0.5 : 0, ease: ease.out }}
                 >
-                  <p className="text-[0.8125rem] font-semibold tracking-[0.1em] text-ciano-200 uppercase">Nossa indicação</p>
-                  <p className="display mt-3 text-[1.375rem] leading-snug md:text-[1.75rem]">{item.a}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[0.8125rem] font-semibold tracking-[0.1em] text-ciano-200 uppercase">Nossa indicação</p>
+                    <p className="display mt-3 text-[1.25rem] leading-snug md:text-[1.5rem]">{item.a}</p>
+                    <Link
+                      href={`/testes/${item.produto}`}
+                      tabIndex={on ? 0 : -1}
+                      className="group/ver mt-5 inline-flex items-center gap-2 text-[0.9375rem] font-medium text-ciano-200"
+                    >
+                      <span className="border-b border-ciano-200/40 pb-0.5 transition-colors group-hover/ver:border-ciano-200">Ver produto</span>
+                      <span aria-hidden className="transition-transform duration-300 group-hover/ver:translate-x-1">→</span>
+                    </Link>
+                  </div>
+                  {/* A caixa do produto indicado, flutuando ao lado do texto. */}
+                  <motion.div
+                    className="relative aspect-square w-[42%] shrink-0 max-sm:w-[56%] max-sm:self-center"
+                    initial={false}
+                    animate={on ? { scale: 1, rotate: 0 } : { scale: 0.8, rotate: -8 }}
+                    transition={{ duration: on ? 0.8 : 0, ease: ease.out }}
+                  >
+                    <Caixa id={item.produto} nome={testes.find((t) => t.id === item.produto)!.nome} solta className="absolute inset-0 scale-[1.4]" />
+                  </motion.div>
                 </motion.div>
               );
             })}

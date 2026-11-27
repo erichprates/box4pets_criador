@@ -206,15 +206,17 @@ export const comparativo: {
 ];
 
 export const comoEscolher = [
-  { q: "Vai testar reprodutores pela primeira vez?", a: "Painel Saúde." },
+  { q: "Vai testar reprodutores pela primeira vez?", a: "Painel Saúde.", produto: "painel" },
   {
     q: "Cria raças com padrão merle?",
     a: "Pastor Australiano, Border Collie, Dachshund, Chihuahua e outras: Painel Saúde, que já detecta o merle. Para cruzar dois cães com alguma variante merle, acrescente o Teste Merle detalhado.",
+    produto: "merle",
   },
-  { q: "Precisa de uma doença específica que não está no painel?", a: "Fale com a equipe para um teste avulso." },
+  { q: "Precisa de uma doença específica que não está no painel?", a: "Fale com a equipe para um teste avulso.", produto: "avulsos" },
   {
     q: "Quer confirmar a paternidade da ninhada?",
     a: "O Painel Saúde já inclui o Perfil de DNA. Para filhotes que não vão fazer o Painel, peça só o Perfil de DNA (R$ 489).",
+    produto: "perfil",
   },
 ];
 

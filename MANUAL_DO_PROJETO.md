@@ -144,3 +144,4 @@ Do projeto:
 - Vitrine: cards sem borda (superfície branca, sombra suave, cantos de 28px, imagem de ponta a ponta); entrada com desfoque e escala e elevação com mola ao passar o mouse; "Recomendado" virou pílula dentro da imagem.
 - Card recomendado: continua em primeiro, um pouco maior no desktop (à frente dos outros) e com uma luz aqua e roxa girando em volta. Testado no meio da fileira e descartado, porque são quatro produtos.
 - "Como funciona": as telas dos passos 2 e 4 são capturas reais do app.
+- Testes, "Como escolher": cada resposta mostra a caixa do produto indicado flutuando ao lado do texto (`Caixa` com `solta`, sem fundo) e um link "Ver produto". O produto de cada resposta fica em `comoEscolher[].produto`.

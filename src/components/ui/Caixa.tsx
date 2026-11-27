@@ -50,7 +50,18 @@ const estilos: Record<
  * Embalagem do produto em 3D, desenhada em CSS: gira de leve sozinha e acompanha o mouse.
  * As medidas sao em `em`, entao a caixa inteira escala com o tamanho de fonte do palco.
  */
-export function Caixa({ id, nome, className = "" }: { id: string; nome: string; className?: string }) {
+export function Caixa({
+  id,
+  nome,
+  className = "",
+  solta = false,
+}: {
+  id: string;
+  nome: string;
+  className?: string;
+  /** Sem fundo nem aneis: so a caixa flutuando, para usar sobre paineis escuros. */
+  solta?: boolean;
+}) {
   const e = estilos[id] ?? estilos.painel;
   const reduced = useReducedMotion();
   const mx = useMotionValue(0);
@@ -79,15 +90,22 @@ export function Caixa({ id, nome, className = "" }: { id: string; nome: string; 
       aria-label={`Embalagem do ${nome}`}
       onPointerMove={reduced ? undefined : onMove}
       onPointerLeave={onLeave}
-      className={`@container grid place-items-center overflow-hidden ${className}`}
-      style={{ background: "radial-gradient(ellipse at 50% 38%,#ffffff 0%,#efeafb 55%,#d9d1f3 100%)" }}
+      className={`@container grid place-items-center ${solta ? "" : "overflow-hidden"} ${className}`}
+      style={solta ? undefined : { background: "radial-gradient(ellipse at 50% 38%,#ffffff 0%,#efeafb 55%,#d9d1f3 100%)" }}
     >
-      <span aria-hidden className="absolute aspect-square w-[92%] rounded-full border border-white/80" />
-      <span aria-hidden className="absolute aspect-square w-[62%] rounded-full border border-white" />
+      {solta ? (
+        /* Brilho aqua atras da caixa. */
+        <span aria-hidden className="absolute inset-[4%] bg-[radial-gradient(closest-side,rgb(96_199_207/0.4),transparent)]" />
+      ) : (
+        <>
+          <span aria-hidden className="absolute aspect-square w-[92%] rounded-full border border-white/80" />
+          <span aria-hidden className="absolute aspect-square w-[62%] rounded-full border border-white" />
+        </>
+      )}
       {/* Sombra no chao. */}
       <span
         aria-hidden
-        className="absolute bottom-[9%] left-1/2 h-[9%] w-[58%] -translate-x-[42%] rounded-[50%] bg-ink/35 blur-xl"
+        className={`absolute bottom-[9%] left-1/2 h-[9%] w-[58%] -translate-x-[42%] rounded-[50%] blur-xl ${solta ? "bg-black/60" : "bg-ink/35"}`}
       />
 
       <div className="animate-float relative text-[4.3cqw] [perspective:60em]">
