@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -17,6 +17,7 @@ import {
   type Teste,
 } from "@/content/site";
 import { ease, viewport } from "@/lib/motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FadeUp } from "../motion/FadeUp";
 import { Words } from "../motion/Words";
 import { Pagamento } from "../ui/Button";
@@ -45,27 +46,70 @@ function useCompra(item: Teste) {
   return { q, setQ, preco, desconto, href, consulta, unidade };
 }
 
-function Quantidade({ q, setQ, nome, grande = false }: { q: number; setQ: (f: (v: number) => number) => void; nome: string; grande?: boolean }) {
-  const h = grande ? "h-14" : "h-12";
+/** Seta do botao de compra. */
+function Seta({ className = "" }: { className?: string }) {
   return (
-    <div className={`flex ${h} shrink-0 items-center rounded-xl border border-line bg-white`} role="group" aria-label={`Quantidade de ${nome}`}>
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden className={`size-4 shrink-0 ${className}`}>
+      <path d="M1 8h13M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+/** Contador de quantidade (mesmo do Aquamundo): o numero rola para cima ou para baixo ao mudar. */
+function Quantidade({
+  q,
+  setQ,
+  nome,
+  grande = false,
+  fundo = "bg-paper",
+}: {
+  q: number;
+  setQ: (f: (v: number) => number) => void;
+  nome: string;
+  grande?: boolean;
+  fundo?: string;
+}) {
+  const [dir, setDir] = useState(1);
+  const passo = (d: number) => {
+    setDir(d);
+    setQ((v) => Math.min(99, Math.max(1, v + d)));
+  };
+  const lado = grande ? "w-12" : "w-10";
+  return (
+    <div className={`flex ${grande ? "h-14" : "h-12"} shrink-0 items-center rounded-xl ${fundo}`} role="group" aria-label={`Quantidade de ${nome}`}>
       <button
         type="button"
         aria-label="Diminuir quantidade"
-        onClick={() => setQ((v) => Math.max(1, v - 1))}
+        onClick={() => passo(-1)}
         disabled={q <= 1}
-        className={`grid h-full ${grande ? "w-12" : "w-10"} cursor-pointer place-items-center text-[1.125rem] text-ink transition-colors hover:text-roxo disabled:opacity-30`}
+        className={`grid h-full ${lado} cursor-pointer place-items-center text-xl text-ink transition-opacity hover:opacity-50 disabled:cursor-default disabled:opacity-25`}
       >
         −
       </button>
-      <span aria-live="polite" className="w-7 text-center text-[0.9375rem] font-semibold tabular-nums">
-        {q}
+      <span aria-live="polite" className="relative grid h-full w-7 place-items-center overflow-hidden text-[1rem] font-semibold tabular-nums">
+        <AnimatePresence mode="popLayout" initial={false} custom={dir}>
+          <motion.span
+            key={q}
+            custom={dir}
+            variants={{
+              entra: (d: number) => ({ y: 18 * d, opacity: 0 }),
+              fica: { y: 0, opacity: 1 },
+              sai: (d: number) => ({ y: -18 * d, opacity: 0 }),
+            }}
+            initial="entra"
+            animate="fica"
+            exit="sai"
+            transition={{ duration: 0.25 }}
+          >
+            {q}
+          </motion.span>
+        </AnimatePresence>
       </span>
       <button
         type="button"
         aria-label="Aumentar quantidade"
-        onClick={() => setQ((v) => Math.min(99, v + 1))}
-        className={`grid h-full ${grande ? "w-12" : "w-10"} cursor-pointer place-items-center text-[1.125rem] text-ink transition-colors hover:text-roxo`}
+        onClick={() => passo(1)}
+        className={`grid h-full ${lado} cursor-pointer place-items-center text-xl text-ink transition-opacity hover:opacity-50`}
       >
         +
       </button>
@@ -73,26 +117,119 @@ function Quantidade({ q, setQ, nome, grande = false }: { q: number; setQ: (f: (v
   );
 }
 
+/**
+ * Botao de compra (mesmo do Aquamundo): no hover uma cor sobe por dentro e a seta sai e
+ * reentra; no clique ele encolhe de leve, abre o WhatsApp e mostra a confirmacao por cima.
+ */
+function BotaoComprar({
+  href,
+  rotulo,
+  total,
+  grande = false,
+}: {
+  href: string;
+  rotulo: string;
+  /** Valor exibido ao lado do rotulo (ex: "R$ 1.238"). */
+  total?: string;
+  grande?: boolean;
+}) {
+  const [ok, setOk] = useState(false);
+  const reduced = useReducedMotion();
+  const clicar = () => {
+    window.open(href, "_blank", "noopener");
+    setOk(true);
+    window.setTimeout(() => setOk(false), 2400);
+  };
+  return (
+    <motion.button
+      type="button"
+      onClick={clicar}
+      whileTap={reduced ? undefined : { scale: 0.97 }}
+      className={`group/buy relative min-w-0 flex-1 cursor-pointer overflow-hidden rounded-xl bg-roxo font-medium tracking-[-0.01em] text-white ${
+        grande ? "h-14 text-[1.0625rem]" : "h-12 text-[0.9375rem]"
+      }`}
+    >
+      <span
+        aria-hidden
+        className="absolute inset-0 translate-y-[101%] bg-ink transition-transform duration-500 ease-out-expo group-hover/buy:translate-y-0"
+      />
+      <AnimatePresence mode="wait" initial={false}>
+        {ok ? (
+          <motion.span
+            key="ok"
+            className="absolute inset-0 flex items-center justify-center gap-2.5 bg-[#25d366] px-3 text-white"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.5, ease: ease.out }}
+          >
+            <svg viewBox="0 0 20 20" className="size-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <motion.path
+                d="m4 10.5 4 4 8-9"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.45, delay: 0.25 }}
+              />
+            </svg>
+            <span className="truncate">{grande ? "Abrindo o WhatsApp" : "WhatsApp"}</span>
+          </motion.span>
+        ) : (
+          <motion.span
+            key="comprar"
+            className="relative flex items-center justify-center gap-2.5 px-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <span className="truncate">
+              {rotulo}
+              {total && <span className="opacity-70"> · {total}</span>}
+            </span>
+            <span className="relative block size-4 shrink-0 overflow-hidden">
+              <Seta className="absolute inset-0 transition-transform duration-500 ease-out-expo group-hover/buy:translate-x-[110%]" />
+              <Seta className="absolute inset-0 -translate-x-[110%] transition-transform duration-500 ease-out-expo group-hover/buy:translate-x-0" />
+            </span>
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+}
+
+/** Etiqueta "Recomendado" presa no topo do card, com estrela. */
+function SeloRecomendado() {
+  return (
+    <span className="absolute -top-3.5 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-roxo py-1.5 pr-4 pl-3 text-[0.8125rem] font-semibold whitespace-nowrap text-white shadow-[0_10px_24px_rgb(63_47_128/0.4)]">
+      <svg viewBox="0 0 20 20" className="size-4 text-ciano-200" fill="currentColor" aria-hidden>
+        <path d="m10 1.8 2.5 5.2 5.7.8-4.1 4 1 5.7L10 14.8l-5.1 2.7 1-5.7-4.1-4 5.7-.8L10 1.8Z" />
+      </svg>
+      Recomendado
+    </span>
+  );
+}
+
+/** Classes do card: o recomendado ganha contorno, brilho e um leve degrade. */
+const cartao = (rec?: boolean) =>
+  rec
+    ? "relative bg-gradient-to-b from-lilas to-white ring-2 ring-roxo shadow-[0_30px_70px_rgb(63_47_128/0.28)] lg:-translate-y-3"
+    : "relative border border-line bg-white";
+
 /** Produto da vitrine: foto, selos, nome, preco, quantidade e compra pelo WhatsApp. */
 export function Produto({ item }: { item: Teste }) {
   const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
   const pagina = `/testes/${item.id}`;
   return (
     <motion.article
-      className={`group flex min-w-0 flex-col rounded-card bg-white p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.16)] ${
-        item.recomendado ? "ring-2 ring-roxo" : "border border-line"
-      }`}
+      className={`group flex min-w-0 flex-col rounded-card p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.2)] ${cartao(item.recomendado)}`}
       variants={{
         hidden: { opacity: 0, y: 60 },
         show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
       }}
     >
+      {item.recomendado && <SeloRecomendado />}
       <Link href={pagina} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.4] overflow-hidden rounded-[14px] bg-paper">
         <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
         <span className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-          {item.recomendado && (
-            <span className="rounded-full bg-roxo px-2.5 py-1 text-[0.6875rem] font-semibold text-white">Recomendado</span>
-          )}
           <span className="rounded-full bg-white/90 px-2.5 py-1 text-[0.6875rem] font-semibold text-ink backdrop-blur">
             {item.especies}
           </span>
@@ -128,14 +265,11 @@ export function Produto({ item }: { item: Teste }) {
 
         <div className="mt-2 flex gap-2">
           <Quantidade q={q} setQ={setQ} nome={item.nome} />
-          <a
+          <BotaoComprar
             href={href}
-            target="_blank"
-            rel="noopener"
-            className="flex h-12 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-3 text-[0.9375rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
-          >
-            {consulta ? "Consultar" : "Comprar"}
-          </a>
+            rotulo={consulta ? "Consultar" : "Comprar"}
+            total={q > 1 ? brl(preco * q) : undefined}
+          />
         </div>
         <Link
           href={pagina}
@@ -152,7 +286,7 @@ export function Produto({ item }: { item: Teste }) {
 export function Vitrine({ itens }: { itens: Teste[] }) {
   return (
     <motion.div
-      className={`grid gap-5 sm:grid-cols-2 ${itens.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
+      className={`grid gap-x-5 gap-y-8 pt-6 sm:grid-cols-2 ${itens.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
       initial="hidden"
       whileInView="show"
       viewport={viewport}
@@ -334,16 +468,13 @@ export function PaginaProduto({ id }: { id: string }) {
                 )}
 
                 <div className="mt-5 flex gap-2">
-                  <Quantidade q={q} setQ={setQ} nome={item.nome} grande />
-                  <a
+                  <Quantidade q={q} setQ={setQ} nome={item.nome} grande fundo="bg-white" />
+                  <BotaoComprar
                     href={href}
-                    target="_blank"
-                    rel="noopener"
-                    className="flex h-14 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-4 text-[1rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
-                  >
-                    {consulta ? "Consultar" : "Comprar"}
-                    <span className="max-sm:hidden">&nbsp;pelo WhatsApp</span>
-                  </a>
+                    rotulo={consulta ? "Consultar" : "Comprar"}
+                    total={brl(preco * q)}
+                    grande
+                  />
                 </div>
                 <a
                   href={links.contato}
@@ -458,16 +589,13 @@ function Compra({ item, tamanho = "md" }: { item: Teste; tamanho?: "md" | "lg" }
         </ul>
       )}
       <div className="mt-4 flex gap-2">
-        <Quantidade q={q} setQ={setQ} nome={item.nome} grande />
-        <a
+        <Quantidade q={q} setQ={setQ} nome={item.nome} grande fundo="bg-white" />
+        <BotaoComprar
           href={href}
-          target="_blank"
-          rel="noopener"
-          className="flex h-14 min-w-0 flex-1 items-center justify-center rounded-xl bg-roxo px-4 text-[1rem] font-medium text-white transition-colors duration-300 hover:bg-roxo-700"
-        >
-          {consulta ? "Consultar" : "Comprar"}
-          <span className="max-sm:hidden">&nbsp;pelo WhatsApp</span>
-        </a>
+          rotulo={consulta ? "Consultar" : "Comprar"}
+          total={brl(preco * q)}
+          grande
+        />
       </div>
     </div>
   );
@@ -536,7 +664,7 @@ export function BlocoProduto({ id, invertido = false, destaque = false }: { id: 
 export function ComparativoLoja() {
   return (
     <motion.div
-      className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+      className="grid gap-x-5 gap-y-8 pt-6 sm:grid-cols-2 lg:grid-cols-4"
       initial="hidden"
       whileInView="show"
       viewport={viewport}
@@ -547,19 +675,15 @@ export function ComparativoLoja() {
         return (
           <motion.article
             key={item.id}
-            className={`group flex min-w-0 flex-col rounded-card bg-white p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.16)] ${
-              item.recomendado ? "ring-2 ring-roxo" : "border border-line"
-            }`}
+            className={`group flex min-w-0 flex-col rounded-card p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.2)] ${cartao(item.recomendado)}`}
             variants={{
               hidden: { opacity: 0, y: 60 },
               show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
             }}
           >
+            {item.recomendado && <SeloRecomendado />}
             <Link href={`/testes/${item.id}`} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.4] overflow-hidden rounded-[14px]">
               <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
-              {item.recomendado && (
-                <span className="absolute top-3 left-3 rounded-full bg-roxo px-2.5 py-1 text-[0.6875rem] font-semibold text-white">Recomendado</span>
-              )}
             </Link>
             <div className="flex flex-1 flex-col p-3.5 pt-4">
               <h3 className="display text-[1.3125rem] leading-snug text-ink">{item.nome}</h3>

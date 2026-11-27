@@ -113,7 +113,7 @@ export function Escolha() {
             />
           </div>
           <FadeUp delay={0.1}>
-            <Pagamento className="lg:max-w-[340px] lg:justify-end" />
+            <Pagamento />
           </FadeUp>
         </div>
 

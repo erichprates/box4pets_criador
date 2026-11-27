@@ -136,3 +136,4 @@ Do projeto:
 - Linha de pagamento virou destaque de loja (`Pagamento` em `ui/Button.tsx`), com ícones de WhatsApp e cartão.
 - Página Testes em formato de loja: comparador com as caixas, e Painel Saúde e complementares como blocos de produto com compra.
 - Página de produto só com a caixa 3D (sem fotos adicionais); preços sempre com a unidade (/kit ou /teste).
+- Loja: contador com número que rola e botão de compra animado (cor que sobe, seta que troca, confirmação ao clicar), no padrão do Aquamundo; "Recomendado" vira selo com estrela no topo do card, com contorno e brilho.

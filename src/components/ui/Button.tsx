@@ -116,7 +116,7 @@ export function Pagamento({
   parcelas?: string;
   className?: string;
 }) {
-  const chip = `flex items-center gap-2.5 rounded-full py-1.5 pr-4 pl-1.5 text-[0.875rem] font-medium ${
+  const chip = `flex items-center gap-2.5 rounded-full py-1.5 pr-4 pl-1.5 text-[0.875rem] leading-tight font-medium min-[430px]:whitespace-nowrap ${
     escuro ? "border border-white/20 bg-white/10 text-white backdrop-blur" : "border border-line bg-white text-ink"
   }`;
   return (
