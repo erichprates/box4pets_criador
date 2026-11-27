@@ -210,13 +210,35 @@ export function Produto({ item }: { item: Teste }) {
   const pagina = `/testes/${item.id}`;
   return (
     <motion.article
-      className={`group flex min-w-0 flex-col overflow-hidden rounded-[28px] ${cartao(item.recomendado)}`}
+      className={`group relative flex min-w-0 flex-col ${item.recomendado ? "z-10" : ""}`}
       variants={{
         hidden: { opacity: 0, y: 48, scale: 0.96, filter: "blur(10px)" },
         show: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: 1.1, ease: ease.out } },
       }}
       whileHover={{ y: -8, transition: { type: "spring", stiffness: 260, damping: 22 } }}
     >
+      {/* No desktop o recomendado fica maior, como se estivesse a frente dos outros. */}
+      <div className={`relative flex flex-1 flex-col ${item.recomendado ? "origin-left lg:scale-[1.06]" : ""}`}>
+      {/* Recomendado: uma luz aqua e roxa gira devagar em volta do card, com um halo desfocado atras. */}
+      {item.recomendado && (
+        <>
+          <span aria-hidden className="absolute -inset-2 overflow-hidden rounded-[36px] opacity-55 blur-xl">
+            <motion.span
+              className="absolute -inset-[50%] bg-[conic-gradient(from_0deg,#60c7cf,#7c6bd0,#3f2f80,#8fe3f2,#60c7cf)]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 7, ease: "linear", repeat: Infinity }}
+            />
+          </span>
+          <span aria-hidden className="absolute -inset-[2px] overflow-hidden rounded-[30px]">
+            <motion.span
+              className="absolute -inset-[50%] bg-[conic-gradient(from_0deg,#8fe3f2,#7c6bd0,#3f2f80_45%,#8fe3f2_70%,#ffffff_80%,#8fe3f2)]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 7, ease: "linear", repeat: Infinity }}
+            />
+          </span>
+        </>
+      )}
+      <div className={`flex flex-1 flex-col overflow-hidden rounded-[28px] ${cartao(item.recomendado)}`}>
       {/* A imagem ocupa o topo do card de ponta a ponta, sem moldura. */}
       <Link href={pagina} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.5] overflow-hidden">
         <Caixa
@@ -281,6 +303,8 @@ export function Produto({ item }: { item: Teste }) {
           Saiba mais
         </Link>
       </div>
+      </div>
+      </div>
     </motion.article>
   );
 }
@@ -289,7 +313,7 @@ export function Produto({ item }: { item: Teste }) {
 export function Vitrine({ itens }: { itens: Teste[] }) {
   return (
     <motion.div
-      className={`grid gap-5 sm:grid-cols-2 ${itens.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
+      className={`grid gap-5 lg:gap-7 lg:py-5 sm:grid-cols-2 ${itens.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
       initial="hidden"
       whileInView="show"
       viewport={viewport}

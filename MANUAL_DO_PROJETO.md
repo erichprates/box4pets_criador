@@ -56,7 +56,7 @@ tabela que vira cartões, sanfona, lista) em `src/components/ui/Blocos.tsx`.
   faixas de desconto, quantidade, comprar, selos, três abas (Descrição, Como funciona,
   Informações) e "Recomendados" com os outros produtos. "Saiba mais" e o rodapé levam a ela.
 - **Ninhada Testada (home):** painel escuro com os dois vídeos em stories.
-- **Como funciona:** quatro passos, cada um com imagem (foto do kit, tela do app no cadastro, foto do swab, tela do laudo). As duas telas são desenhadas no site (`TelaApp` em `Home.tsx`); as duas fotos vieram do Box4Vets e são provisórias.
+- **Como funciona:** quatro passos, cada um com imagem (foto do kit, tela do app no cadastro, foto do swab, tela do laudo). As duas telas são capturas reais do app enviadas pelo cliente (`app-ativacao.jpg` e `app-laudo.jpg`, originais com só 207px de largura: pedir versões maiores); as duas fotos vieram do Box4Vets e são provisórias.
 - **Como escolher (Testes):** quatro perguntas em abas, com a indicação ao lado.
 - **Como é o laudo:** três status e um celular ilustrativo com a lista de condições.
 - **Certificado (Programa Criador):** modelo desenhado em HTML, com os campos entre colchetes.
@@ -142,3 +142,5 @@ Do projeto:
 - Testes: ordem final é como escolher, laudo, Painel Saúde, coleta, comparativo e complementares; os complementares viraram cartões menores com "Ver produto" (sem compra ali). Atendimento das 9h às 18h.
 - Home: "Como funciona" com imagem em cada passo, como no protótipo.
 - Vitrine: cards sem borda (superfície branca, sombra suave, cantos de 28px, imagem de ponta a ponta); entrada com desfoque e escala e elevação com mola ao passar o mouse; "Recomendado" virou pílula dentro da imagem.
+- Card recomendado: continua em primeiro, um pouco maior no desktop (à frente dos outros) e com uma luz aqua e roxa girando em volta. Testado no meio da fileira e descartado, porque são quatro produtos.
+- "Como funciona": as telas dos passos 2 e 4 são capturas reais do app.

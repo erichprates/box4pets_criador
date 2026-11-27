@@ -227,59 +227,25 @@ export function NinhadaHome() {
   );
 }
 
-/** Tela do app desenhada no site (o protótipo pede "TELA", nao foto). */
-function TelaApp({ tipo }: { tipo: "cadastro" | "laudo" }) {
+/** Tela real do app (captura enviada pelo cliente), como um celular que sobe do rodape do quadro. */
+function TelaApp({ tipo }: { tipo: "ativacao" | "laudo" }) {
   return (
-    <div className="grad-soft absolute inset-0 grid place-items-center overflow-hidden">
-      <span aria-hidden className="absolute aspect-square w-[90%] rounded-full border border-white/80" />
-      <div className="relative w-[56%] rounded-[18px] bg-gradient-to-br from-ciano-200 via-white to-roxo-400 p-[1.5px] shadow-[0_20px_44px_rgb(63_47_128/0.25)] transition-transform duration-700 ease-out-expo group-hover:-translate-y-1.5">
-        <div className="overflow-hidden rounded-[16.5px] bg-white/85 backdrop-blur">
-          <div className="bg-gradient-to-br from-roxo via-roxo-400 to-ciano px-3.5 py-3 text-white">
-            <p className="text-[0.5rem] tracking-[0.14em] text-white/80 uppercase">Box4Pets</p>
-            <p className="display text-[0.8125rem] leading-tight">{tipo === "cadastro" ? "Cadastro do animal" : "Laudo"}</p>
-          </div>
-          {tipo === "cadastro" ? (
-            <div className="flex flex-col gap-1.5 p-3">
-              {["Nome", "Espécie", "Código do kit"].map((c, n) => (
-                <div key={c}>
-                  <p className="text-[0.5rem] font-semibold text-mute">{c}</p>
-                  <span className="mt-1 flex h-5 items-center rounded-md border border-line bg-paper px-1.5">
-                    <span className="h-1.5 rounded-full bg-ink/20" style={{ width: `${[55, 30, 45, 65][n]}%` }} />
-                  </span>
-                </div>
-              ))}
-              <span className="mt-1 grid h-6 place-items-center rounded-md bg-roxo text-[0.5625rem] font-semibold text-white">
-                Ativar kit
-              </span>
-            </div>
-          ) : (
-            <ul className="flex flex-col px-3.5 py-2">
-              {(["Normal", "Portador", "Normal", "Normal"] as const).map((st, n) => (
-                <li key={n} className="flex items-center justify-between gap-2 border-b border-line py-2 last:border-0">
-                  <span className="h-1.5 rounded-full bg-ink/20" style={{ width: `${[52, 40, 58, 34, 46][n]}%` }} />
-                  <span
-                    className={`shrink-0 rounded-full px-2 py-0.5 text-[0.5rem] font-semibold ${
-                      st === "Normal" ? "bg-[#dff5e8] text-[#0f6b3a]" : "bg-[#fdf0d2] text-[#8a5a00]"
-                    }`}
-                  >
-                    {st}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+    <div className="grad-soft absolute inset-0 overflow-hidden">
+      <span aria-hidden className="absolute top-1/2 left-1/2 aspect-square w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/80" />
+      <div className="absolute top-[9%] left-1/2 w-[50%] -translate-x-1/2 overflow-hidden rounded-t-[13%] bg-white shadow-[0_20px_44px_rgb(63_47_128/0.28)] transition-transform duration-700 ease-out-expo group-hover:-translate-y-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={asset(`/media/app-${tipo}.jpg`)} alt="" loading="lazy" className="block w-full" />
       </div>
     </div>
   );
 }
 
 /** Imagem de cada passo, na ordem do protótipo: foto, tela, foto, tela. */
-const midiaPassos: ({ foto: string; alt: string } | { tela: "cadastro" | "laudo"; alt: string })[] = [
+const midiaPassos: ({ foto: string; alt: string } | { tela: "ativacao" | "laudo"; alt: string })[] = [
   { foto: "/media/kit.jpg", alt: "Kit aberto, com a caixa, os swabs e o envelope" },
-  { tela: "cadastro", alt: "Tela do app Box4Pets no cadastro do animal" },
+  { tela: "ativacao", alt: "Tela inicial do app Box4Pets, com o botão Ativar" },
   { foto: "/media/coleta.jpg", alt: "Mão passando o swab na bochecha de um cão" },
-  { tela: "laudo", alt: "Tela do app com o laudo, mostrando os status Normal e Portador" },
+  { tela: "laudo", alt: "Tela do app Box4Pets com o resultado de um cão" },
 ];
 
 /** Como funciona: quatro passos, cada um com sua imagem, ligados por uma linha que se desenha. */
