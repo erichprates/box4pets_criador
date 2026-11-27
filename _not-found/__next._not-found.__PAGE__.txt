@@ -1,0 +1,40 @@
+1:"$Sreact.fragment"
+2:"/box4pets_criador/_next/static/chunks/2sfm7odz-g1y3.js"
+3:"/box4pets_criador/_next/static/chunks/1_19xrjy_lgvl.js"
+4:"CarrinhoProvider"
+5:I[78896,["$2","$3"],"$4"]
+6:I[66029,["$2","$3"],"SmoothScroll"]
+7:"/box4pets_criador/_next/static/chunks/1ua2kfq9s-me6.js"
+8:I[39756,["$7"],"default"]
+9:I[37457,["$7"],"default"]
+a:I[46072,["$2","$3"],"Carrinho"]
+11:I[97367,["$7"],"OutletBoundary"]
+12:"$Sreact.suspense"
+15:"ViewportBoundary"
+16:I[97367,["$7"],"$15"]
+17:"MetadataBoundary"
+18:I[97367,["$7"],"$17"]
+:HL["/box4pets_criador/_next/static/chunks/0i8kkm-q7dmqe.css","style"]
+c:X
+f:X
+f:C
+10:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:0:props:children:props:notFound:0:1:props:style","children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:0:props:children:props:notFound:0:1:props:children:props:children:1:props:style","children":404}],["$","div",null,{"style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:0:props:children:props:notFound:0:1:props:children:props:children:2:props:style","children":["$","h2",null,{"style":"$0:t:t:d:r:props:children:1:props:children:props:children:props:children:0:props:children:props:notFound:0:1:props:children:props:children:2:props:children:props:style","children":"This page could not be found."}]}]]}]}]],null,["$","$L11",null,{"children":["$","$12",null,{"name":"Next.MetadataOutlet","children":"$@13"}]}]]}],"p":"$@14","v":null,"s":"$c"}}]]
+d:[["children",{"s":"/_not-found","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L8",null,{"parallelRouterKey":"children","template":["$","$L9",null,{}]}]]}],"p":"$@e","v":"$f","s":"$c"},"c":"$Q10"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/box4pets_criador/_next/static/chunks/0i8kkm-q7dmqe.css","precedence":"next"}],["$","script","script-0",{"src":"/box4pets_criador/_next/static/chunks/2sfm7odz-g1y3.js","async":true}],["$","script","script-1",{"src":"/box4pets_criador/_next/static/chunks/1_19xrjy_lgvl.js","async":true}]],["$","html",null,{"lang":"pt-BR","className":"P4dhDW_variable XR_xfa_variable","children":["$","body",null,{"children":["$","$L5",null,{"children":[["$","$L6",null,{"children":["$","$L8",null,{"parallelRouterKey":"children","template":["$","$L9",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}],["$","$La",null,{}]]}]}]}]]}],"p":"$@b","v":null,"s":"$c"},"c":"$Qd"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L16",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#3f2f80"}]]}],["$","$L18",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$12",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Box4Pets | Genética de saúde para criadores de cães e gatos"}],["$","meta","1",{"name":"description","content":"O Painel Saúde da Box4Pets avalia 220 doenças genéticas em cães e 39 em gatos, de forma simples e fácil. Laudo no app e em PDF, resultado em 6 semanas e suporte veterinário por WhatsApp."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","link","3",{"rel":"canonical","href":"https://erichprates.github.io/box4pets_criador/"}],["$","meta","4",{"property":"og:title","content":"Box4Pets | Genética de saúde para criadores de cães e gatos"}],["$","meta","5",{"property":"og:description","content":"O Painel Saúde da Box4Pets avalia 220 doenças genéticas em cães e 39 em gatos, de forma simples e fácil. Laudo no app e em PDF, resultado em 6 semanas e suporte veterinário por WhatsApp."}],["$","meta","6",{"property":"og:url","content":"https://erichprates.github.io/box4pets_criador/"}],["$","meta","7",{"property":"og:site_name","content":"Box4Pets"}],["$","meta","8",{"property":"og:locale","content":"pt_BR"}],["$","meta","9",{"property":"og:image","content":"https://erichprates.github.io/box4pets_criador/opengraph-image?4b7b8ae2cd36b58c"}],["$","meta","10",{"property":"og:image:type","content":"image/png"}],["$","meta","11",{"property":"og:image:width","content":"1200"}],["$","meta","12",{"property":"og:image:height","content":"630"}],["$","meta","13",{"property":"og:image:alt","content":"Box4Pets: genética de saúde para criadores de cães e gatos"}],["$","meta","14",{"property":"og:type","content":"website"}],["$","meta","15",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","16",{"name":"twitter:title","content":"Box4Pets | Genética de saúde para criadores de cães e gatos"}],["$","meta","17",{"name":"twitter:description","content":"O Painel Saúde da Box4Pets avalia 220 doenças genéticas em cães e 39 em gatos, de forma simples e fácil. Laudo no app e em PDF, resultado em 6 semanas e suporte veterinário por WhatsApp."}],["$","meta","18",{"name":"twitter:image","content":"https://erichprates.github.io/box4pets_criador/opengraph-image?4b7b8ae2cd36b58c"}],"$L19","$L1a","$L1b","$L1c","$L1d","$L1e"]}]}],null]}],"$L1f"]}],"p":"$@20","v":null,"s":"$c"}},"a":"$@21","u":"$@22","b":"tjbo1JwsrxJClP0wDuxM9"}
+23:I[27201,["$7"],"IconMark"]
+13:null
+19:["$","meta","19",{"name":"twitter:image:alt","content":"Box4Pets: genética de saúde para criadores de cães e gatos"}]
+1a:["$","meta","20",{"name":"twitter:image:type","content":"image/png"}]
+1b:["$","meta","21",{"name":"twitter:image:width","content":"1200"}]
+1c:["$","meta","22",{"name":"twitter:image:height","content":"630"}]
+1d:["$","link","23",{"rel":"icon","href":"/box4pets_criador/icon.svg"}]
+1e:["$","$L23","24",{}]
+1f:["$","meta",null,{"name":"next-size-adjust","content":""}]
+c:300
+22:true
+c:C
+21:0
+e:"$undefined"
+b:"$undefined"
+20:"$undefined"
+14:"$undefined"
