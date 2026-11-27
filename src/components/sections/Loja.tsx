@@ -629,58 +629,75 @@ function Compra({ item, tamanho = "md" }: { item: Teste; tamanho?: "md" | "lg" }
 }
 
 /**
- * Bloco de produto da pagina Testes: a caixa 3D de um lado e, do outro, descricao, preco,
- * quantidade e compra. `invertido` troca os lados.
+ * Chamada curta de um produto na pagina Testes: caixa, resumo, preco e o atalho para a pagina
+ * do produto. A compra (quantidade, faixas de desconto) fica so na pagina do produto.
  */
 export function BlocoProduto({ id, invertido = false, destaque = false }: { id: string; invertido?: boolean; destaque?: boolean }) {
   const item = testes.find((t) => t.id === id)!;
-  const longo =
-    id === "painel"
-      ? "O Painel Saúde avalia 220 doenças genéticas em cães e 39 doenças e variantes em gatos, incluindo as recomendadas para a raça do seu animal."
-      : complementares.find((c) => c.id === id)!.texto;
+  const pagina = `/testes/${id}`;
   return (
     <FadeUp>
-      <article id={id} className="grid scroll-mt-28 items-stretch gap-2.5 rounded-panel bg-white p-2.5 lg:grid-cols-2">
+      <article
+        id={id}
+        className="group grid scroll-mt-28 items-center gap-x-10 gap-y-6 overflow-hidden rounded-panel bg-white p-2.5 shadow-[0_1px_2px_rgb(27_18_61/0.04),0_14px_36px_rgb(27_18_61/0.07)] lg:grid-cols-[0.8fr_1.2fr]"
+      >
         <Link
-          href={`/testes/${id}`}
+          href={pagina}
           aria-label={`Ver ${item.nome}`}
-          className={`relative block min-h-[320px] overflow-hidden rounded-[20px] lg:min-h-[520px] ${invertido ? "lg:order-2" : ""}`}
+          className={`relative block aspect-[4/3] overflow-hidden rounded-[20px] lg:aspect-auto lg:h-full lg:min-h-[330px] ${invertido ? "lg:order-2" : ""}`}
         >
-          <Caixa id={id} nome={item.nome} className="absolute inset-0" />
+          <Caixa
+            id={id}
+            nome={item.nome}
+            className="absolute inset-0 transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.05]"
+          />
           <span className="absolute top-4 left-4 flex flex-wrap gap-1.5">
             {item.recomendado && (
-              <span className="rounded-full bg-roxo px-3 py-1.5 text-[0.75rem] font-semibold text-white">Recomendado</span>
+              <span className="rounded-full bg-roxo/90 px-3 py-1.5 text-[0.75rem] font-semibold text-white backdrop-blur-md">Recomendado</span>
             )}
-            <span className="rounded-full bg-white/90 px-3 py-1.5 text-[0.75rem] font-semibold text-ink backdrop-blur">{item.especies}</span>
+            <span className="rounded-full bg-white/70 px-3 py-1.5 text-[0.75rem] font-semibold text-ink backdrop-blur-md">{item.especies}</span>
           </span>
         </Link>
-        <div className="flex flex-col gap-5 p-5 md:p-9">
+        <div className="flex flex-col gap-5 p-5 md:p-8 lg:pl-0">
           <div>
             {destaque && <p className="text-[0.8125rem] font-semibold tracking-[0.1em] text-roxo uppercase">Produto principal</p>}
-            <h3 className={`display mt-2 text-ink ${destaque ? "text-display" : "text-title"}`}>{item.nome}</h3>
+            <h3 className="display mt-2 text-title text-ink">{item.nome}</h3>
+            <p className="mt-3 max-w-[520px] text-mute">{item.texto}</p>
           </div>
-          <p className="text-mute">{longo}</p>
           {id === "painel" && (
-            <ul className="grid gap-2 sm:grid-cols-2">
+            <ul className="flex flex-wrap gap-2">
               {painelDestaques.map((d) => (
-                <li key={d} className="flex items-center gap-2.5 text-[0.9375rem] font-medium text-ink">
-                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-roxo text-white">
-                    <Check size={13} strokeWidth={2.6} />
+                <li key={d} className="flex items-center gap-2 rounded-full bg-paper py-1.5 pr-3.5 pl-2 text-[0.875rem] font-medium text-ink">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-roxo text-white">
+                    <Check size={11} strokeWidth={2.8} />
                   </span>
                   {d}
                 </li>
               ))}
             </ul>
           )}
-          <div className="mt-auto rounded-[20px] bg-paper p-5 md:p-6">
-            <Compra item={item} tamanho={destaque ? "lg" : "md"} />
+          <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border-t border-line pt-5">
+            <div>
+              <p className="display flex items-baseline gap-1.5 text-[2rem] leading-none text-ink">
+                {brl(unitario[id as keyof typeof unitario])}
+                <span className="font-sans text-[0.875rem] font-normal text-mute">/{id === "avulsos" ? "teste" : "kit"}</span>
+              </p>
+              {id === "painel" && (
+                <p className="mt-1.5 text-[0.8125rem] text-ciano-700">Acima de 3 kits, R$ 529 cada; acima de 10, R$ 489 cada.</p>
+              )}
+            </div>
+            <Link
+              href={pagina}
+              className="group/ver relative flex h-13 items-center gap-2.5 overflow-hidden rounded-xl bg-roxo px-6 text-[1rem] font-medium text-white"
+            >
+              <span aria-hidden className="absolute inset-0 translate-y-[101%] bg-ink transition-transform duration-500 ease-out-expo group-hover/ver:translate-y-0" />
+              <span className="relative">Ver produto</span>
+              <span className="relative block size-4 overflow-hidden">
+                <Seta className="absolute inset-0 transition-transform duration-500 ease-out-expo group-hover/ver:translate-x-[110%]" />
+                <Seta className="absolute inset-0 -translate-x-[110%] transition-transform duration-500 ease-out-expo group-hover/ver:translate-x-0" />
+              </span>
+            </Link>
           </div>
-          <Link
-            href={`/testes/${id}`}
-            className="inline-flex min-h-9 w-fit items-center text-[0.9375rem] font-medium text-roxo underline decoration-roxo/30 underline-offset-4 hover:decoration-roxo"
-          >
-            Ver página do produto →
-          </Link>
         </div>
       </article>
     </FadeUp>
