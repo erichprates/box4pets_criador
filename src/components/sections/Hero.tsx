@@ -1,7 +1,7 @@
 "use client";
 
 import { asset } from "@/lib/base";
-import { motion, useMotionTemplate, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { links, selos } from "@/content/site";
@@ -12,9 +12,6 @@ import { Words } from "../motion/Words";
 import { SplitButton } from "../ui/Button";
 import { ArrowRight, Icon } from "../ui/icons";
 import { Logo } from "../ui/Logo";
-
-/** Ponto em que o video comeca (em segundos). */
-const START = 0;
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,62 +43,19 @@ export function Hero() {
   const logoScale = useTransform(scrollY, [0, 150], [1, 0.6]);
   const video = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
-  // Tempo do video pedido pela rolagem, e a funcao que leva o video ate ele.
-  const alvo = useRef(START);
-  const aplicar = useRef<() => void>(() => undefined);
-  // O video segue a rolagem com uma pequena inercia, em vez de pular a cada evento.
-  const smooth = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.35 });
 
+  // O video de fundo toca sozinho, em loop, assim que a pagina abre (sem esperar a rolagem).
   useEffect(() => {
     const v = video.current;
-    if (!v) return;
+    if (!v || reduced) return;
     v.muted = true;
     v.defaultMuted = true;
-    /*
-     * No celular (iPhone principalmente) o video nao carrega quadro nenhum ate tocar uma vez,
-     * e o evento de "carregou" nem dispara antes disso. Entao: manda tocar ja, pausa na hora
-     * e posiciona. Se o aparelho recusar (modo de economia de bateria), tenta de novo no
-     * primeiro toque na tela.
-     */
-    let ok = false;
-    const prime = () => {
-      if (ok) return;
-      void v
-        .play()
-        .then(() => {
-          ok = true;
-          v.pause();
-          setReady(true);
-          seek();
-        })
-        .catch(() => undefined);
-    };
-    // Procura um quadro por vez: pedir outro antes do anterior chegar trava o video no celular.
-    const seek = () => {
-      if (!ok || v.seeking || !v.duration) return;
-      const t = Math.min(v.duration - 0.05, alvo.current);
-      if (Math.abs(v.currentTime - t) > 0.03) v.currentTime = t;
-    };
-    aplicar.current = seek;
-    v.addEventListener("seeked", seek);
-    v.addEventListener("loadeddata", prime);
-    window.addEventListener("touchstart", prime, { passive: true });
-    v.load();
-    prime();
-    return () => {
-      v.removeEventListener("seeked", seek);
-      v.removeEventListener("loadeddata", prime);
-      window.removeEventListener("touchstart", prime);
-    };
-  }, []);
-
-  useMotionValueEvent(smooth, "change", (p) => {
-    const v = video.current;
-    if (!v || reduced) return;
-    const d = v.duration || 6.6;
-    alvo.current = START + Math.max(0, p) * (d - START);
-    aplicar.current();
-  });
+    const tocar = () => void v.play().then(() => setReady(true)).catch(() => undefined);
+    tocar();
+    // Se o aparelho recusar (modo de economia de bateria), tenta de novo no primeiro toque.
+    window.addEventListener("touchstart", tocar, { passive: true, once: true });
+    return () => window.removeEventListener("touchstart", tocar);
+  }, [reduced]);
 
   return (
     <section id="topo" ref={ref}>
@@ -111,7 +65,7 @@ export function Hero() {
         className="relative overflow-clip bg-ink pt-[88px] pb-10 text-white md:pt-[120px] md:pb-14"
         style={{ clipPath: reduced ? "inset(8px 12px 0px 12px round 28px)" : clipPath }}
       >
-        {/* Video de fundo: fica preso na tela e avanca (ou volta) conforme a rolagem. */}
+        {/* Video de fundo: fica preso na tela e toca sozinho, em loop. */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
             className="sticky top-0 h-svh overflow-hidden bg-cover bg-center"
@@ -119,6 +73,8 @@ export function Hero() {
           >
             <video
               ref={video}
+              autoPlay
+              loop
               muted
               playsInline
               preload="auto"
