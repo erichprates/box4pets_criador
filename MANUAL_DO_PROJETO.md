@@ -158,3 +158,5 @@ Do projeto:
 - Carrinho: "Comprar" virou "Adicionar ao carrinho"; o pedido fecha em uma única mensagem de WhatsApp.
 - Rodapé no celular: compacto e centralizado, sem as colunas Produto e Criador (o mapa do site continua no desktop).
 - Corrigidos: sufixo do título das páginas ("| Box4Pets Criador", estava "| Box4Vets") e sobra lateral na página de produto no celular.
+- Carrinho no celular: com itens, um botão flutuante (ícone, quantidade e total) fica no canto inferior direito e abre a gaveta.
+- Home: a faixa de vídeo ficou sem a linha de preços.

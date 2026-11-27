@@ -63,7 +63,7 @@ function mensagem(itens: Record<string, number>, total: number) {
 
 /** Gaveta do carrinho: itens, quantidades, desconto por quantidade e fechamento pelo WhatsApp. */
 export function Carrinho() {
-  const { itens, unidades, total, economia, aberto, fechar, definir, remover } = useCarrinho();
+  const { itens, unidades, total, economia, aberto, abrir, fechar, definir, remover } = useCarrinho();
   const ids = noCarrinho.filter((id) => itens[id]);
   const painel = itens.painel ?? 0;
   // Proxima faixa de desconto do Painel Saude.
@@ -81,6 +81,37 @@ export function Carrinho() {
   }, [aberto, fechar]);
 
   return (
+    <>
+    {/* No celular, com itens no carrinho, um botao fica flutuando no canto da tela (o menu some ao rolar). */}
+    <AnimatePresence>
+      {unidades > 0 && !aberto && (
+        <motion.button
+          type="button"
+          onClick={abrir}
+          aria-label={`Abrir carrinho, ${unidades} ${unidades > 1 ? "itens" : "item"}, total ${brl(total)}`}
+          className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex h-14 cursor-pointer items-center gap-3 rounded-full bg-roxo pr-5 pl-2 text-white shadow-[0_16px_40px_rgb(63_47_128/0.45)] lg:hidden"
+          initial={{ y: 90, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 90, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 320, damping: 26 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span className="relative grid size-10 place-items-center rounded-full bg-white text-roxo">
+            <IconeCarrinho className="size-5" />
+            <motion.span
+              key={unidades}
+              className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-ciano px-1 text-[0.6875rem] font-semibold text-white tabular-nums"
+              initial={{ scale: 0.4 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 18 }}
+            >
+              {unidades}
+            </motion.span>
+          </span>
+          <span className="display text-[1rem] tabular-nums">{brl(total)}</span>
+        </motion.button>
+      )}
+    </AnimatePresence>
     <AnimatePresence>
       {aberto && (
         <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label="Carrinho">
@@ -236,5 +267,6 @@ export function Carrinho() {
         </div>
       )}
     </AnimatePresence>
+    </>
   );
 }
