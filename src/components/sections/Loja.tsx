@@ -578,7 +578,7 @@ export function PaginaProduto({ id }: { id: string }) {
       <section className="py-20 md:py-28">
         <div className="container-page">
           <FadeUp>
-            <h2 className="display mb-10 text-display text-ink">Recomendados</h2>
+            <h2 className="display mb-10 text-display text-ink">Outros testes recomendados</h2>
           </FadeUp>
           <Vitrine itens={testes.filter((t) => t.id !== id)} />
         </div>
