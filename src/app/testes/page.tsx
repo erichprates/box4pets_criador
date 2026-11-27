@@ -23,11 +23,11 @@ export default function Page() {
           titulo="Os testes genéticos da Box4Pets"
           texto="Comece pelo Painel Saúde. Se o seu programa de criação precisar de mais, complete com o Teste Merle ou testes avulsos. O Perfil de DNA já vem incluso no Painel Saúde e também pode ser pedido à parte."
         />
-        <Comparativo />
         <ComoEscolher />
         <Laudo />
         <PainelSaude />
         <Coleta />
+        <Comparativo />
         <Complementares />
         <Fecho
           titulo="Plantel grande ou projeto de saúde para a sua raça?"
