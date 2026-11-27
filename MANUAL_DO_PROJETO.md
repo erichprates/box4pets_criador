@@ -48,8 +48,13 @@ tabela que vira cartões, sanfona, lista) em `src/components/ui/Blocos.tsx`.
 - **Hero da home:** igual ao do Box4Vets (vídeo de DNA controlado pela rolagem, logo central
   que migra para o menu, box com vídeo que levanta da perspectiva).
 - **Selos:** faixa que corre sem parar abaixo do hero.
-- **Escolha o seu teste:** vitrine em formato de loja. Cada teste é um produto com foto, preço,
-  seletor de quantidade e botão "Comprar", que abre o WhatsApp já com produto e quantidade.
+- **Escolha o seu teste:** vitrine em formato de loja. Cada teste é um produto com caixa, preço,
+  seletor de quantidade e botão "Adicionar", que põe o produto no carrinho.
+- **Carrinho** (`src/lib/carrinho.tsx` e `src/components/sections/Carrinho.tsx`): ícone com
+  contador no menu; abre uma gaveta lateral com itens, quantidades, quanto falta para a
+  próxima faixa de desconto do Painel Saúde, desconto aplicado e total. "Finalizar pelo
+  WhatsApp" abre a conversa com o pedido inteiro escrito. Fica salvo no navegador
+  (`localStorage`). Não há pagamento no site. Testes avulsos não entram: continuam "Consultar".
   No Painel Saúde o preço por kit cai sozinho conforme a quantidade (acima de 3 e de 10).
   Testes avulsos são sob consulta, sem quantidade.
 - **Página de produto** (`src/components/sections/Loja.tsx`): galeria com miniaturas, preço,
@@ -150,3 +155,6 @@ Do projeto:
 
 **27/11/2026**
 - Home, "Por que testar": os quatro cards viraram uma pilha (`CartaoPilha` em `Home.tsx`). Cada card é grande, com foto ao lado, gruda no topo (`position: sticky`) e encolhe um pouco quando o seguinte chega por cima; as cores vão do branco ao roxo escuro. Os textos não mudaram.
+- Carrinho: "Comprar" virou "Adicionar ao carrinho"; o pedido fecha em uma única mensagem de WhatsApp.
+- Rodapé no celular: compacto e centralizado, sem as colunas Produto e Criador (o mapa do site continua no desktop).
+- Corrigidos: sufixo do título das páginas ("| Box4Pets Criador", estava "| Box4Vets") e sobra lateral na página de produto no celular.

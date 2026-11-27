@@ -55,17 +55,18 @@ export function Fecho({
 
         <footer className="container-page relative mt-20 md:mt-28">
           <div className="rounded-[22px] bg-white text-ink">
-            <div className="grid gap-10 p-7 md:p-10 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
-              <div>
+            {/* No celular o rodape e compacto: sem o mapa do site, so marca e contatos, centralizados. */}
+            <div className="grid gap-10 p-7 max-md:gap-6 max-md:text-center md:p-10 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
+              <div className="max-md:flex max-md:flex-col max-md:items-center">
                 <Link href="/" aria-label="Box4Pets Criador, página inicial" className="inline-block">
-                  <Logo className="h-14 w-auto" />
+                  <Logo className="h-14 w-auto max-md:h-12" />
                 </Link>
-                <p className="mt-4 max-w-[260px] text-[0.9375rem] text-mute">{rodape.frase}</p>
+                <p className="mt-4 max-w-[260px] text-[0.9375rem] text-mute max-md:mt-3">{rodape.frase}</p>
               </div>
               {rodape.colunas.map((col) => (
-                <nav key={col.titulo} aria-label={col.titulo}>
-                  <p className="display text-[1rem] text-ink">{col.titulo}</p>
-                  <ul className="mt-4 flex flex-col gap-2.5 text-[0.9375rem] text-mute">
+                <nav key={col.titulo} aria-label={col.titulo} className={col.links.some((l) => l.icone) ? "" : "max-md:hidden"}>
+                  <p className="display text-[1rem] text-ink max-md:hidden">{col.titulo}</p>
+                  <ul className="mt-4 flex flex-col gap-2.5 text-[0.9375rem] text-mute max-md:mt-0 max-md:items-center">
                     {col.links.map((l) => (
                       <li key={l.label}>
                         {l.href.startsWith("/") ? (
@@ -103,9 +104,9 @@ export function Fecho({
                 </nav>
               ))}
             </div>
-            <div className="flex flex-col gap-3 border-t border-line px-7 py-5 text-[0.8125rem] text-mute md:flex-row md:items-center md:justify-between md:px-10">
+            <div className="flex flex-col gap-3 border-t border-line px-7 py-5 text-[0.8125rem] text-mute max-md:items-center max-md:text-center md:flex-row md:items-center md:justify-between md:px-10">
               <span>{rodape.legal}</span>
-              <span className="flex flex-wrap gap-x-4 gap-y-1">
+              <span className="flex flex-wrap gap-x-4 gap-y-1 max-md:justify-center">
                 {rodape.politicas.map((p) => (
                   <a key={p} href="#" className="transition-colors hover:text-roxo">
                     {p}

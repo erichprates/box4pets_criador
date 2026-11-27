@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { links, nav } from "@/content/site";
 import { ease } from "@/lib/motion";
 import { SplitButton } from "../ui/Button";
+import { BotaoCarrinho } from "./Carrinho";
 import { ArrowUpRight, Close, Menu } from "../ui/icons";
 import { Logo } from "../ui/Logo";
 
@@ -152,6 +153,7 @@ export function Header({ heroLogo = false }: { heroLogo?: boolean }) {
             <SplitButton href={links.pedir} size="sm" variant={darkRight ? "light" : "primary"} className="max-md:hidden">
               Pedir pelo WhatsApp
             </SplitButton>
+            <BotaoCarrinho />
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}

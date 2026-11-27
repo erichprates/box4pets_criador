@@ -2,6 +2,8 @@ import { asset } from "@/lib/base";
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Poppins } from "next/font/google";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { Carrinho } from "@/components/sections/Carrinho";
+import { CarrinhoProvider } from "@/lib/carrinho";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -20,7 +22,7 @@ const instrument = Instrument_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: site.titulo, template: "%s | Box4Vets" },
+  title: { default: site.titulo, template: "%s | Box4Pets Criador" },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -45,7 +47,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`${poppins.variable} ${instrument.variable}`}>
       <body>
-        <SmoothScroll>{children}</SmoothScroll>
+        <CarrinhoProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+          <Carrinho />
+        </CarrinhoProvider>
       </body>
     </html>
   );

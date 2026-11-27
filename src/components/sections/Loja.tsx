@@ -16,6 +16,7 @@ import {
   testes,
   type Teste,
 } from "@/content/site";
+import { brl, precoPainel, unitario, useCarrinho } from "@/lib/carrinho";
 import { ease, viewport } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FadeUp } from "../motion/FadeUp";
@@ -23,11 +24,6 @@ import { Words } from "../motion/Words";
 import { Pagamento } from "../ui/Button";
 import { Caixa } from "../ui/Caixa";
 import { Check, Icon } from "../ui/icons";
-
-/** Preco unitario do Painel Saude conforme a quantidade (acima de 3 e acima de 10 kits). */
-const precoPainel = (q: number) => (q > 10 ? 489 : q > 3 ? 529 : 619);
-const unitario: Record<string, number> = { painel: 619, merle: 450, avulsos: 450, perfil: 489 };
-const brl = (v: number) => `R$ ${v.toLocaleString("pt-BR")}`;
 
 /**
  * Quantidade, preco e link de compra de um produto. Nos testes avulsos cada unidade e um
@@ -43,7 +39,16 @@ function useCompra(item: Teste) {
     ? `${links.whatsapp}?text=${encodeURIComponent(`Olá! Procuro ${q > 1 ? `${q} testes que não estão` : "um teste que não está"} no Painel Saúde. Podem me ajudar?`)}`
     : `${links.whatsapp}?text=${encodeURIComponent(`Olá! Vim pelo site e quero pedir ${q} ${q > 1 ? "kits" : "kit"} de ${item.nome}.`)}`;
   const unidade = consulta ? "teste" : "kit";
-  return { q, setQ, preco, desconto, href, consulta, unidade };
+  const { adicionar, abrir } = useCarrinho();
+  // Poe no carrinho e abre a gaveta logo depois da confirmacao do botao. Avulsos nao entram: sao sob consulta.
+  const porNoCarrinho = consulta
+    ? undefined
+    : () => {
+        adicionar(item.id, q);
+        setQ(1);
+        window.setTimeout(abrir, 650);
+      };
+  return { q, setQ, preco, desconto, href, consulta, unidade, porNoCarrinho };
 }
 
 /** Seta do botao de compra. */
@@ -56,7 +61,7 @@ function Seta({ className = "" }: { className?: string }) {
 }
 
 /** Contador de quantidade (mesmo do Aquamundo): o numero rola para cima ou para baixo ao mudar. */
-function Quantidade({
+export function Quantidade({
   q,
   setQ,
   nome,
@@ -126,19 +131,23 @@ function BotaoComprar({
   rotulo,
   total,
   grande = false,
+  aoAdicionar,
 }: {
   href: string;
   rotulo: string;
   /** Valor exibido ao lado do rotulo (ex: "R$ 1.238"). */
   total?: string;
   grande?: boolean;
+  /** Com ela o botao poe no carrinho; sem ela, abre o WhatsApp (testes avulsos). */
+  aoAdicionar?: () => void;
 }) {
   const [ok, setOk] = useState(false);
   const reduced = useReducedMotion();
   const clicar = () => {
-    window.open(href, "_blank", "noopener");
+    if (aoAdicionar) aoAdicionar();
+    else window.open(href, "_blank", "noopener");
     setOk(true);
-    window.setTimeout(() => setOk(false), 2400);
+    window.setTimeout(() => setOk(false), aoAdicionar ? 1500 : 2400);
   };
   return (
     <motion.button
@@ -146,7 +155,7 @@ function BotaoComprar({
       onClick={clicar}
       whileTap={reduced ? undefined : { scale: 0.97 }}
       className={`group/buy relative min-w-0 flex-1 cursor-pointer overflow-hidden rounded-xl bg-roxo font-medium tracking-[-0.01em] text-white ${
-        grande ? "h-14 text-[1.0625rem]" : "h-12 min-w-[104px] text-[0.9375rem]"
+        grande ? "h-14 min-w-[200px] text-[1.0625rem]" : "h-12 min-w-[104px] text-[0.9375rem]"
       }`}
     >
       <span
@@ -157,7 +166,7 @@ function BotaoComprar({
         {ok ? (
           <motion.span
             key="ok"
-            className="absolute inset-0 flex items-center justify-center gap-2.5 bg-[#25d366] px-3 text-white"
+            className={`absolute inset-0 flex items-center justify-center gap-2.5 px-3 ${aoAdicionar ? "bg-ciano-200 text-ink" : "bg-[#25d366] text-white"}`}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
@@ -171,7 +180,7 @@ function BotaoComprar({
                 transition={{ duration: 0.45, delay: 0.25 }}
               />
             </svg>
-            <span className="truncate">{grande ? "Abrindo o WhatsApp" : "WhatsApp"}</span>
+            <span className="truncate">{aoAdicionar ? "Adicionado" : grande ? "Abrindo o WhatsApp" : "WhatsApp"}</span>
           </motion.span>
         ) : (
           <motion.span
@@ -183,7 +192,7 @@ function BotaoComprar({
           >
             <span className={grande ? "truncate" : "whitespace-nowrap"}>
               {rotulo}
-              {total && <span className="opacity-70"> · {total}</span>}
+              {total && <span className="opacity-70 max-[430px]:hidden"> · {total}</span>}
             </span>
             {grande && (
               <span className="relative block size-4 shrink-0 overflow-hidden">
@@ -206,7 +215,7 @@ const cartao = (rec?: boolean) =>
 
 /** Produto da vitrine: foto, selos, nome, preco, quantidade e compra pelo WhatsApp. */
 export function Produto({ item }: { item: Teste }) {
-  const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
+  const { q, setQ, preco, desconto, href, consulta, unidade, porNoCarrinho } = useCompra(item);
   const pagina = `/testes/${item.id}`;
   return (
     <motion.article
@@ -293,7 +302,8 @@ export function Produto({ item }: { item: Teste }) {
           <Quantidade q={q} setQ={setQ} nome={item.nome} />
           <BotaoComprar
             href={href}
-            rotulo={consulta ? "Consultar" : "Comprar"}
+            rotulo={consulta ? "Consultar" : "Adicionar"}
+            aoAdicionar={porNoCarrinho}
           />
         </div>
         <Link
@@ -329,7 +339,7 @@ export function Vitrine({ itens }: { itens: Teste[] }) {
 /** Pagina de produto, em formato de loja. */
 export function PaginaProduto({ id }: { id: string }) {
   const item = testes.find((t) => t.id === id)!;
-  const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
+  const { q, setQ, preco, desconto, href, consulta, unidade, porNoCarrinho } = useCompra(item);
   const [aba, setAba] = useState(0);
   const info = comparativo.find((c) => c.teste === item.nome)!;
   const longo = complementares.find((c) => c.id === id)?.texto;
@@ -439,7 +449,7 @@ export function PaginaProduto({ id }: { id: string }) {
             <span className="text-ink">{item.nome}</span>
           </nav>
 
-          <div className="mt-6 grid items-start gap-10 lg:grid-cols-[1.08fr_1fr] lg:gap-16">
+          <div className="mt-6 grid grid-cols-[minmax(0,1fr)] items-start gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,1fr)] lg:gap-16">
             {/* Imagem do produto: so a embalagem 3D. */}
             <div className="flex flex-col gap-3 lg:sticky lg:top-24">
               <motion.div
@@ -494,11 +504,12 @@ export function PaginaProduto({ id }: { id: string }) {
                   </ul>
                 )}
 
-                <div className="mt-5 flex gap-2">
+                <div className="mt-5 flex flex-wrap gap-2">
                   <Quantidade q={q} setQ={setQ} nome={item.nome} grande fundo="bg-white" />
                   <BotaoComprar
                     href={href}
-                    rotulo={consulta ? "Consultar" : "Comprar"}
+                    rotulo={consulta ? "Consultar" : "Adicionar ao carrinho"}
+                    aoAdicionar={porNoCarrinho}
                     total={brl(preco * q)}
                     grande
                   />
@@ -589,7 +600,7 @@ export function PaginaProduto({ id }: { id: string }) {
 
 /** Linha de compra reaproveitada: preco com unidade, pagamento, quantidade e botao. */
 function Compra({ item, tamanho = "md" }: { item: Teste; tamanho?: "md" | "lg" }) {
-  const { q, setQ, preco, desconto, href, consulta, unidade } = useCompra(item);
+  const { q, setQ, preco, desconto, href, consulta, unidade, porNoCarrinho } = useCompra(item);
   return (
     <div>
       <p className={`display flex flex-wrap items-baseline gap-x-3 leading-none text-ink ${tamanho === "lg" ? "text-[3rem]" : "text-[2.25rem]"}`}>
@@ -615,11 +626,12 @@ function Compra({ item, tamanho = "md" }: { item: Teste; tamanho?: "md" | "lg" }
           })}
         </ul>
       )}
-      <div className="mt-4 flex gap-2">
+      <div className="mt-4 flex flex-wrap gap-2">
         <Quantidade q={q} setQ={setQ} nome={item.nome} grande fundo="bg-white" />
         <BotaoComprar
           href={href}
-          rotulo={consulta ? "Consultar" : "Comprar"}
+          rotulo={consulta ? "Consultar" : "Adicionar ao carrinho"}
+                    aoAdicionar={porNoCarrinho}
           total={brl(preco * q)}
           grande
         />
