@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, type MotionValue, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { links, ninhadaHome, passos, porque, selos, testes } from "@/content/site";
@@ -41,51 +41,83 @@ export function Selos() {
 }
 
 /** Por que testar: titulo e quatro cards com foto. */
+/** Cores de cada card da pilha: do claro ao escuro, para dar profundidade conforme empilham. */
+const pilha = [
+  { fundo: "bg-white", texto: "text-ink", apoio: "text-mute", num: "text-roxo", icone: "bg-roxo text-white" },
+  { fundo: "bg-lilas", texto: "text-ink", apoio: "text-ink/70", num: "text-roxo", icone: "bg-roxo text-white" },
+  { fundo: "bg-roxo", texto: "text-white", apoio: "text-white/80", num: "text-ciano-200", icone: "bg-white text-roxo" },
+  { fundo: "bg-ink", texto: "text-white", apoio: "text-white/75", num: "text-ciano-200", icone: "bg-ciano-200 text-ink" },
+];
+
+/** Um card da pilha: gruda no topo e encolhe de leve quando os proximos chegam por cima. */
+function CartaoPilha({
+  item,
+  n,
+  total,
+  progresso,
+}: {
+  item: (typeof porque)[number];
+  n: number;
+  total: number;
+  progresso: MotionValue<number>;
+}) {
+  const reduced = useReducedMotion();
+  const c = pilha[n % pilha.length];
+  // Cada card comeca a encolher quando o seguinte entra, e para num tamanho menor quanto mais fundo estiver.
+  const scale = useTransform(progresso, [n / total, 1], [1, 1 - (total - 1 - n) * 0.045]);
+  const fotoY = useTransform(progresso, [Math.max(0, (n - 1) / total), (n + 1) / total], ["-6%", "6%"]);
+  return (
+    <li className="sticky mb-8 last:mb-0 md:mb-14" style={{ top: `calc(clamp(84px, 13vh, 132px) + ${n * 18}px)` }}>
+      <motion.article
+        className={`group grid origin-top overflow-hidden rounded-[32px] shadow-[0_-18px_50px_rgb(27_18_61/0.14)] md:min-h-[min(440px,62vh)] md:grid-cols-[1.05fr_1fr] ${c.fundo} ${c.texto}`}
+        style={reduced ? undefined : { scale }}
+      >
+        <div className="flex flex-col justify-between gap-8 p-7 md:p-12">
+          <div className="flex items-center justify-between">
+            <span className={`display text-[0.9375rem] tabular-nums ${c.num}`}>
+              /0{n + 1}
+              <span className="opacity-50"> de 0{total}</span>
+            </span>
+            <span className={`grid size-12 place-items-center rounded-full transition-transform duration-500 ease-out-expo group-hover:scale-110 group-hover:-rotate-6 ${c.icone}`}>
+              <Icon name={item.icon} size={22} />
+            </span>
+          </div>
+          <div>
+            <h3 className="display text-title">{item.titulo}</h3>
+            <p className={`mt-4 max-w-[460px] text-[1.0625rem] ${c.apoio}`}>{item.texto}</p>
+          </div>
+        </div>
+        <div className="relative m-2.5 min-h-[200px] overflow-hidden rounded-[24px] max-md:order-first md:min-h-0">
+          {item.foto && (
+            <motion.div className="absolute -inset-y-[8%] inset-x-0" style={reduced ? undefined : { y: fotoY }}>
+              <Image
+                src={item.foto}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 580px, 92vw"
+                className="object-cover transition-transform duration-[1400ms] ease-out-expo group-hover:scale-105"
+              />
+            </motion.div>
+          )}
+        </div>
+      </motion.article>
+    </li>
+  );
+}
+
+/** Por que testar: quatro cards grandes que vao se empilhando conforme a pagina rola. */
 export function PorQue() {
+  const ref = useRef<HTMLUListElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.2", "end 0.75"] });
   return (
     <section className="py-24 md:py-36">
       <div className="container-page">
         <Titulo tag="Por que testar" titulo="Decisões de acasalamento com dados e estratégia para garantir saúde" />
-        <motion.div
-          className="mt-14 grid gap-5 sm:grid-cols-2 md:mt-20 lg:grid-cols-4"
-          initial="hidden"
-          whileInView="show"
-          viewport={viewport}
-          transition={{ staggerChildren: 0.1 }}
-        >
-          {porque.map((item) => (
-            <motion.article
-              key={item.titulo}
-              className="group flex min-w-0 flex-col rounded-card border border-line bg-white p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.14)]"
-              variants={{
-                hidden: { opacity: 0, y: 60, scale: 0.96 },
-                show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: ease.out } },
-              }}
-            >
-              <div className="grad-card relative h-52 overflow-hidden rounded-[14px]">
-                {item.foto && (
-                  <>
-                    <Image
-                      src={item.foto}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1024px) 280px, (min-width: 640px) 46vw, 92vw"
-                      className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover:scale-110"
-                    />
-                    <span className="absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-transparent" />
-                  </>
-                )}
-                <span className="absolute bottom-3 left-3 grid size-12 place-items-center rounded-full bg-roxo text-white shadow-[0_10px_24px_rgb(63_47_128/0.35)] transition-transform duration-500 ease-out-expo group-hover:scale-110 group-hover:-rotate-6">
-                  <Icon name={item.icon} size={22} />
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col gap-3 p-4 pt-5">
-                <h3 className="display text-[1.25rem] leading-snug text-ink">{item.titulo}</h3>
-                <p className="text-[0.9375rem] text-mute">{item.texto}</p>
-              </div>
-            </motion.article>
+        <ul ref={ref} className="mt-14 md:mt-20">
+          {porque.map((item, n) => (
+            <CartaoPilha key={item.titulo} item={item} n={n} total={porque.length} progresso={scrollYProgress} />
           ))}
-        </motion.div>
+        </ul>
       </div>
     </section>
   );

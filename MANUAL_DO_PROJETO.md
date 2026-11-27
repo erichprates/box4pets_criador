@@ -147,3 +147,6 @@ Do projeto:
 - Testes, "Como escolher": cada resposta mostra a caixa do produto indicado flutuando ao lado do texto (`Caixa` com `solta`, sem fundo) e um link "Ver produto". O produto de cada resposta fica em `comoEscolher[].produto`.
 - Testes: o bloco do Painel Saúde ficou curto (caixa, resumo, quatro destaques, preço e "Ver produto"). Quantidade, faixas de desconto e compra ficam só na página do produto e na vitrine da home.
 - Hero: "Conhecer os testes" com fundo azul claro (variante `aqua` do `SplitButton`) e "Conhecer o Programa Criador" como botão de contorno branco.
+
+**27/11/2026**
+- Home, "Por que testar": os quatro cards viraram uma pilha (`CartaoPilha` em `Home.tsx`). Cada card é grande, com foto ao lado, gruda no topo (`position: sticky`) e encolhe um pouco quando o seguinte chega por cima; as cores vão do branco ao roxo escuro. Os textos não mudaram.
