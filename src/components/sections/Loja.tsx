@@ -198,23 +198,11 @@ function BotaoComprar({
   );
 }
 
-/** Etiqueta "Recomendado" presa no topo do card, com estrela. */
-function SeloRecomendado() {
-  return (
-    <span className="absolute -top-3.5 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-roxo py-1.5 pr-4 pl-3 text-[0.8125rem] font-semibold whitespace-nowrap text-white shadow-[0_10px_24px_rgb(63_47_128/0.4)]">
-      <svg viewBox="0 0 20 20" className="size-4 text-ciano-200" fill="currentColor" aria-hidden>
-        <path d="m10 1.8 2.5 5.2 5.7.8-4.1 4 1 5.7L10 14.8l-5.1 2.7 1-5.7-4.1-4 5.7-.8L10 1.8Z" />
-      </svg>
-      Recomendado
-    </span>
-  );
-}
-
-/** Classes do card: o recomendado ganha contorno, brilho e um leve degrade. */
+/** Classes do card, sem borda: superficie branca com sombra suave; o recomendado ganha degrade e brilho roxo. */
 const cartao = (rec?: boolean) =>
   rec
-    ? "relative bg-gradient-to-b from-lilas to-white ring-2 ring-roxo shadow-[0_30px_70px_rgb(63_47_128/0.28)] lg:-translate-y-3"
-    : "relative border border-line bg-white";
+    ? "relative bg-gradient-to-b from-white via-white to-lilas shadow-[0_2px_4px_rgb(63_47_128/0.06),0_28px_64px_rgb(63_47_128/0.24)]"
+    : "relative bg-white shadow-[0_1px_2px_rgb(27_18_61/0.04),0_14px_36px_rgb(27_18_61/0.07)]";
 
 /** Produto da vitrine: foto, selos, nome, preco, quantidade e compra pelo WhatsApp. */
 export function Produto({ item }: { item: Teste }) {
@@ -222,23 +210,36 @@ export function Produto({ item }: { item: Teste }) {
   const pagina = `/testes/${item.id}`;
   return (
     <motion.article
-      className={`group flex min-w-0 flex-col rounded-card p-2.5 transition-shadow duration-500 hover:shadow-[0_30px_60px_rgb(63_47_128/0.2)] ${cartao(item.recomendado)}`}
+      className={`group flex min-w-0 flex-col overflow-hidden rounded-[28px] ${cartao(item.recomendado)}`}
       variants={{
-        hidden: { opacity: 0, y: 60 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: ease.out } },
+        hidden: { opacity: 0, y: 48, scale: 0.96, filter: "blur(10px)" },
+        show: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { duration: 1.1, ease: ease.out } },
       }}
+      whileHover={{ y: -8, transition: { type: "spring", stiffness: 260, damping: 22 } }}
     >
-      {item.recomendado && <SeloRecomendado />}
-      <Link href={pagina} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.4] overflow-hidden rounded-[14px] bg-paper">
-        <Caixa id={item.id} nome={item.nome} className="absolute inset-0" />
-        <span className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-          <span className="rounded-full bg-white/90 px-2.5 py-1 text-[0.6875rem] font-semibold text-ink backdrop-blur">
+      {/* A imagem ocupa o topo do card de ponta a ponta, sem moldura. */}
+      <Link href={pagina} aria-label={`Ver ${item.nome}`} className="relative block aspect-[4/3.5] overflow-hidden">
+        <Caixa
+          id={item.id}
+          nome={item.nome}
+          className="absolute inset-0 transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.06]"
+        />
+        <span className="absolute inset-x-4 top-4 flex items-center justify-between gap-2">
+          <span className="rounded-full bg-white/70 px-3 py-1 text-[0.6875rem] font-semibold text-ink backdrop-blur-md">
             {item.especies}
           </span>
+          {item.recomendado && (
+            <span className="flex items-center gap-1 rounded-full bg-roxo/90 py-1 pr-3 pl-2 text-[0.6875rem] font-semibold text-white backdrop-blur-md">
+              <svg viewBox="0 0 20 20" className="size-3 text-ciano-200" fill="currentColor" aria-hidden>
+                <path d="m10 1.8 2.5 5.2 5.7.8-4.1 4 1 5.7L10 14.8l-5.1 2.7 1-5.7-4.1-4 5.7-.8L10 1.8Z" />
+              </svg>
+              Recomendado
+            </span>
+          )}
         </span>
       </Link>
 
-      <div className="flex flex-1 flex-col gap-2 p-3.5 pt-4">
+      <div className="flex flex-1 flex-col gap-2 p-6 pt-5">
         <h3 className="display text-[1.3125rem] leading-snug text-ink">
           <Link href={pagina} className="transition-colors hover:text-roxo">
             {item.nome}
@@ -288,11 +289,11 @@ export function Produto({ item }: { item: Teste }) {
 export function Vitrine({ itens }: { itens: Teste[] }) {
   return (
     <motion.div
-      className={`grid gap-x-5 gap-y-8 pt-6 sm:grid-cols-2 ${itens.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
+      className={`grid gap-5 sm:grid-cols-2 ${itens.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
       initial="hidden"
       whileInView="show"
       viewport={viewport}
-      transition={{ staggerChildren: 0.1 }}
+      transition={{ staggerChildren: 0.12 }}
     >
       {itens.map((item) => (
         <Produto key={item.id} item={item} />

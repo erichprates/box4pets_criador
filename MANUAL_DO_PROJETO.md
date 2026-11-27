@@ -141,3 +141,4 @@ Do projeto:
 - Hero: botões "Adquira o teste" (rola até a vitrine, não abre o WhatsApp), "Conhecer os testes" e "Conhecer o Programa Criador"; linha de pagamento "Pague em até 6x".
 - Testes: ordem final é como escolher, laudo, Painel Saúde, coleta, comparativo e complementares; os complementares viraram cartões menores com "Ver produto" (sem compra ali). Atendimento das 9h às 18h.
 - Home: "Como funciona" com imagem em cada passo, como no protótipo.
+- Vitrine: cards sem borda (superfície branca, sombra suave, cantos de 28px, imagem de ponta a ponta); entrada com desfoque e escala e elevação com mola ao passar o mouse; "Recomendado" virou pílula dentro da imagem.
