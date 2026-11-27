@@ -74,7 +74,7 @@ function Quantidade({
     setDir(d);
     setQ((v) => Math.min(99, Math.max(1, v + d)));
   };
-  const lado = grande ? "w-12" : "w-10";
+  const lado = grande ? "w-12" : "w-9";
   return (
     <div className={`flex ${grande ? "h-14" : "h-12"} shrink-0 items-center rounded-xl ${fundo}`} role="group" aria-label={`Quantidade de ${nome}`}>
       <button
@@ -86,7 +86,7 @@ function Quantidade({
       >
         −
       </button>
-      <span aria-live="polite" className="relative grid h-full w-7 place-items-center overflow-hidden text-[1rem] font-semibold tabular-nums">
+      <span aria-live="polite" data-q className="relative grid h-full w-6 place-items-center overflow-hidden text-[1rem] font-semibold tabular-nums">
         <AnimatePresence mode="popLayout" initial={false} custom={dir}>
           <motion.span
             key={q}
@@ -146,7 +146,7 @@ function BotaoComprar({
       onClick={clicar}
       whileTap={reduced ? undefined : { scale: 0.97 }}
       className={`group/buy relative min-w-0 flex-1 cursor-pointer overflow-hidden rounded-xl bg-roxo font-medium tracking-[-0.01em] text-white ${
-        grande ? "h-14 text-[1.0625rem]" : "h-12 text-[0.9375rem]"
+        grande ? "h-14 text-[1.0625rem]" : "h-12 min-w-[104px] text-[0.9375rem]"
       }`}
     >
       <span
@@ -176,19 +176,21 @@ function BotaoComprar({
         ) : (
           <motion.span
             key="comprar"
-            className="relative flex items-center justify-center gap-2.5 px-3"
+            className={`relative flex items-center justify-center gap-2.5 ${grande ? "px-3" : "px-1.5"}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <span className="truncate">
+            <span className={grande ? "truncate" : "whitespace-nowrap"}>
               {rotulo}
               {total && <span className="opacity-70"> · {total}</span>}
             </span>
-            <span className="relative block size-4 shrink-0 overflow-hidden">
-              <Seta className="absolute inset-0 transition-transform duration-500 ease-out-expo group-hover/buy:translate-x-[110%]" />
-              <Seta className="absolute inset-0 -translate-x-[110%] transition-transform duration-500 ease-out-expo group-hover/buy:translate-x-0" />
-            </span>
+            {grande && (
+              <span className="relative block size-4 shrink-0 overflow-hidden">
+                <Seta className="absolute inset-0 transition-transform duration-500 ease-out-expo group-hover/buy:translate-x-[110%]" />
+                <Seta className="absolute inset-0 -translate-x-[110%] transition-transform duration-500 ease-out-expo group-hover/buy:translate-x-0" />
+              </span>
+            )}
           </motion.span>
         )}
       </AnimatePresence>
@@ -263,12 +265,12 @@ export function Produto({ item }: { item: Teste }) {
           </p>
         </div>
 
-        <div className="mt-2 flex gap-2">
+        {/* Se o card for estreito demais, o botao desce para a linha de baixo em vez de cortar. */}
+        <div className="mt-2 flex flex-wrap gap-2">
           <Quantidade q={q} setQ={setQ} nome={item.nome} />
           <BotaoComprar
             href={href}
             rotulo={consulta ? "Consultar" : "Comprar"}
-            total={q > 1 ? brl(preco * q) : undefined}
           />
         </div>
         <Link
