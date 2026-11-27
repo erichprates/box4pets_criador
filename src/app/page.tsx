@@ -47,7 +47,7 @@ export default function Home() {
           focoMobile="24%"
         />
         <Fecho
-          titulo="Teste seu plantel antes da próxima ninhada."
+          titulo="Sua próxima ninhada começa com um swab."
           texto="R$ 619 por kit. Acima de 3 kits, R$ 529 cada; acima de 10, R$ 489 cada."
         >
           <SplitButton href={links.afiliados} variant="light">
