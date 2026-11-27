@@ -67,8 +67,9 @@ tabela que vira cartões, sanfona, lista) em `src/components/ui/Blocos.tsx`.
 - **Tabelas:** viram cartões no celular.
 - **Formulário "Quero participar":** monta a mensagem e abre o WhatsApp.
 
-Pequenas mudanças de texto: o botão "Comprar o teste — R$ 619" ficou "Comprar o teste por
-R$ 619" (sem travessão); rótulos novos de apoio: "Por que testar", "Passo a passo", "Nossa
+Pequenas mudanças de texto: o botão do hero "Comprar o teste — R$ 619" virou "Adquira o
+teste" (pedido do cliente), e "Entre em contato" saiu do hero, que agora tem "Ver o que o
+painel avalia" e "Conhecer o Programa Criador"; rótulos novos de apoio: "Por que testar", "Passo a passo", "Nossa
 indicação" e a chamada final das páginas Testes e Aprenda.
 
 ## 5. Mídia
