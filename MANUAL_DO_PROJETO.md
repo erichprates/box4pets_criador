@@ -160,3 +160,4 @@ Do projeto:
 - Corrigidos: sufixo do título das páginas ("| Box4Pets Criador", estava "| Box4Vets") e sobra lateral na página de produto no celular.
 - Carrinho no celular: com itens, um botão flutuante (ícone, quantidade e total) fica no canto inferior direito e abre a gaveta.
 - Home: a faixa de vídeo ficou sem a linha de preços.
+- Faixa de vídeo: logo acima da frase (nas duas faixas, home e Programa Criador); no celular o vídeo da home foi deslocado para o cão aparecer (`focoMobile="24%"` em `FaixaVideo`).

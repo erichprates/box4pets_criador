@@ -44,6 +44,7 @@ export default function Home() {
         <FaixaVideo
           rotulo="Criadora com um cão no canil"
           linhas={["Teste seu plantel", "antes da próxima ninhada."]}
+          focoMobile="24%"
         />
         <Fecho
           titulo="Teste seu plantel antes da próxima ninhada."
