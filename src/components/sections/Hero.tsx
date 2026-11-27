@@ -98,7 +98,7 @@ export function Hero() {
   useMotionValueEvent(smooth, "change", (p) => {
     const v = video.current;
     if (!v || reduced) return;
-    const d = v.duration || 12;
+    const d = v.duration || 6.6;
     alvo.current = START + Math.max(0, p) * (d - START);
     aplicar.current();
   });
