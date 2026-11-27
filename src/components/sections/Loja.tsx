@@ -448,7 +448,7 @@ export function PaginaProduto({ id }: { id: string }) {
                   <span className="font-sans text-[1rem] font-normal text-mute">/{unidade}</span>
                 </p>
                 {q > 1 && <p className="mt-2 text-[0.9375rem] font-semibold text-ink">Total {brl(preco * q)}</p>}
-                <Pagamento className="mt-4" parcelas={painel ? "em até 6x sem juros · frete grátis" : "em até 6x"} />
+                <Pagamento className="mt-4" parcelas={painel ? "pague em até 6x sem juros · frete grátis" : "pague em até 6x"} />
 
                 {painel && (
                   <ul className="mt-5 grid grid-cols-3 gap-2 text-center text-[0.8125rem]">
@@ -573,7 +573,7 @@ function Compra({ item, tamanho = "md" }: { item: Teste; tamanho?: "md" | "lg" }
         <span className="font-sans text-[1rem] font-normal text-mute">/{unidade}</span>
       </p>
       {q > 1 && <p className="mt-2 text-[0.9375rem] font-semibold text-ink">Total {brl(preco * q)}</p>}
-      <Pagamento className="mt-4" parcelas={item.id === "painel" ? "em até 6x sem juros · frete grátis" : "em até 6x"} />
+      <Pagamento className="mt-4" parcelas={item.id === "painel" ? "pague em até 6x sem juros · frete grátis" : "pague em até 6x"} />
       {item.id === "painel" && (
         <ul className="mt-4 grid grid-cols-3 gap-2 text-center text-[0.8125rem]">
           {planos.map((p, n) => {

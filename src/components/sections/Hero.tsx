@@ -4,7 +4,7 @@ import { asset } from "@/lib/base";
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { links, selos } from "@/content/site";
+import { selos } from "@/content/site";
 import { ease } from "@/lib/motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FadeUp } from "../motion/FadeUp";
@@ -126,11 +126,12 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease: ease.out, delay: 1 }}
             >
-              <SplitButton href={links.pedir} variant="light" className="max-md:w-full max-md:justify-between">
-                Comprar o teste por R$ 619
+              {/* Leva para a vitrine de testes, mais abaixo na pagina (nao abre o WhatsApp). */}
+              <SplitButton href="#loja" variant="light" external={false} className="max-md:w-full max-md:justify-between">
+                Adquira o teste
               </SplitButton>
-              <SplitButton href="/testes/painel" variant="outline" external={false} className="max-md:hidden">
-                Ver o que o painel avalia
+              <SplitButton href="/testes" variant="outline" external={false} className="max-md:hidden">
+                Conhecer os testes
               </SplitButton>
               <Link
                 href="/programa-criador"
@@ -224,8 +225,8 @@ export function Hero() {
             </FadeUp>
             <FadeUp delay={0.15} className="md:hidden">
               <div className="flex flex-col gap-3">
-                <SplitButton href="/testes/painel" variant="outline" external={false} className="w-full justify-between">
-                  Ver o que o painel avalia
+                <SplitButton href="/testes" variant="outline" external={false} className="w-full justify-between">
+                  Conhecer os testes
                 </SplitButton>
                 <Link
                   href="/programa-criador"
